@@ -1,0 +1,1145 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ManoCerca — Los mejores profesionales, más cerca tuyo</title>
+  <meta name="description" content="Encontrá trabajadores independientes verificados cerca tuyo. Plomería, electricidad, gas, pintura y más servicios del hogar." />
+  <meta name="theme-color" content="#1D4ED8" />
+
+  <!-- Tailwind CSS v3 CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand:  { DEFAULT: '#1D4ED8', dark: '#1e40af', light: '#3b82f6' },
+            navy:   '#0f172a',
+            sky:    '#0EA5E9',
+          },
+          fontFamily: { sans: ['Inter', 'ui-sans-serif', 'system-ui'] },
+        }
+      }
+    }
+  </script>
+
+  <!-- Google Fonts: Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body class="font-sans bg-slate-50 text-slate-900 antialiased">
+
+<!-- ═══════════════════════════════════════════════════════════════
+     DESKTOP NAVBAR — oculto en mobile (CSS)
+═══════════════════════════════════════════════════════════════ -->
+<header id="main-header" class="sticky top-0 z-50 bg-white border-b border-slate-200 shadow-sm" role="banner">
+  <nav class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between gap-6" aria-label="Navegación principal">
+
+    <!-- Logo -->
+    <a href="#" id="logo-link" data-view="home"
+       class="flex items-center gap-2 flex-shrink-0 focus-visible:outline-2 focus-visible:outline-blue-700 rounded-lg"
+       aria-label="ManoCerca — Inicio">
+      <div class="w-8 h-8 bg-brand rounded-lg flex items-center justify-center flex-shrink-0">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/>
+        </svg>
+      </div>
+      <span class="font-bold text-xl text-brand">ManoCerca</span>
+    </a>
+
+    <!-- Desktop links -->
+    <ul class="hidden md:flex items-center gap-8" role="list">
+      <li><a href="#" class="nav-link active" data-view="home" id="nl-home">Inicio</a></li>
+      <li><a href="#" class="nav-link" data-view="search" id="nl-servicios">Servicios</a></li>
+      <li><a href="#" class="nav-link" id="nl-como">Cómo funciona</a></li>
+    </ul>
+
+    <!-- Right side controls -->
+    <div class="flex items-center gap-2">
+      <!-- Location selector -->
+      <button class="hidden md:flex items-center gap-1.5 text-sm font-medium text-slate-600 hover:text-brand
+                     bg-slate-50 hover:bg-blue-50 border border-slate-200 px-3 py-2 rounded-lg transition-all
+                     focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-1 min-h-[44px]"
+              aria-label="Cambiar ubicación" id="location-btn">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/>
+        </svg>
+        <span>Río Cuarto, Córdoba</span>
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+      </button>
+
+      <!-- Theme toggle -->
+      <button id="theme-btn"
+              class="btn-icon focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-1"
+              aria-label="Cambiar tema" title="Modo oscuro / claro">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+        </svg>
+      </button>
+
+      <!-- User avatar -->
+      <button id="user-btn" data-view="mi-perfil"
+              class="btn-icon focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-1"
+              aria-label="Mi perfil">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
+        </svg>
+      </button>
+    </div>
+  </nav>
+</header>
+
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SPA — VISTAS
+═══════════════════════════════════════════════════════════════ -->
+<main id="app">
+
+  <!-- ─────────────────────────────────────────────
+       VISTA 1: HOME
+  ───────────────────────────────────────────── -->
+  <section id="view-home" class="view active" aria-label="Pantalla principal">
+
+    <!-- HERO -->
+    <div class="hero-bg relative text-white">
+      <div class="hero-worker" aria-hidden="true">
+        <!-- Decorative geometric silhouette -->
+        <svg viewBox="0 0 400 500" class="w-full h-full opacity-20" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+          <ellipse cx="200" cy="350" rx="180" ry="160" fill="rgba(255,255,255,0.08)"/>
+          <circle cx="200" cy="160" r="80" fill="rgba(255,255,255,0.1)"/>
+          <rect x="130" y="240" width="140" height="200" rx="20" fill="rgba(255,255,255,0.08)"/>
+        </svg>
+      </div>
+
+      <div class="max-w-7xl mx-auto px-6 pt-16 pb-20 md:pt-24 md:pb-28 relative z-10">
+        <div class="max-w-xl">
+          <!-- Eyebrow badge -->
+          <span class="inline-block px-4 py-1.5 bg-white/10 border border-white/20 rounded-full text-xs font-semibold mb-5 tracking-wide uppercase">
+            Servicios locales, gente de confianza
+          </span>
+
+          <!-- H1 -->
+          <h1 class="text-4xl md:text-5xl font-extrabold leading-tight mb-4">
+            Los mejores profesionales,<br>
+            <span class="text-blue-300">más cerca tuyo</span>
+          </h1>
+
+          <!-- Subtitle -->
+          <p class="text-slate-300 text-lg leading-relaxed mb-10 max-w-md">
+            Solucioná lo que necesitás en tu hogar con expertos de confianza.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- SEARCH BAR (overlap hero) -->
+    <div class="max-w-3xl mx-auto px-4 -mt-7 relative z-20 mb-8">
+      <div class="search-wrap">
+        <div class="flex-1 flex items-center gap-3 px-5 py-3">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="flex-shrink-0">
+            <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+          </svg>
+          <input id="hero-search" type="text" placeholder="¿Qué servicio necesitás?"
+                 class="flex-1 outline-none text-slate-700 placeholder-slate-400 text-base bg-transparent"
+                 aria-label="Buscar servicio" />
+        </div>
+        <div class="hidden md:flex items-center gap-2 px-5 border-l border-slate-200">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/>
+          </svg>
+          <select class="outline-none text-slate-600 text-sm bg-transparent cursor-pointer" aria-label="Seleccionar zona">
+            <option>Río Cuarto, Córdoba</option>
+            <option>Córdoba Capital</option>
+            <option>Villa María</option>
+            <option>Buenos Aires</option>
+          </select>
+        </div>
+        <button class="btn btn-primary !rounded-none !rounded-r-2xl !w-auto px-7 py-5 text-base" 
+                aria-label="Buscar" id="hero-search-btn" data-view="search">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- CATEGORIES -->
+    <section class="max-w-7xl mx-auto px-4 mb-12" aria-label="Categorías de servicios">
+      <div class="card p-4">
+        <div class="grid grid-cols-4 sm:grid-cols-5 md:grid-cols-9 gap-2" role="list">
+
+          <button class="cat-chip" data-view="search" data-cat="Plomería" aria-label="Plomería" role="listitem">
+            <div class="cat-icon" style="background:#eff6ff">💧</div>
+            <span class="cat-label">Plomería</span>
+          </button>
+          <button class="cat-chip" data-view="search" data-cat="Electricidad" aria-label="Electricidad" role="listitem">
+            <div class="cat-icon" style="background:#fffbeb">⚡</div>
+            <span class="cat-label">Electricidad</span>
+          </button>
+          <button class="cat-chip" data-view="search" data-cat="Gas" aria-label="Gas" role="listitem">
+            <div class="cat-icon" style="background:#fef9c3">🔥</div>
+            <span class="cat-label">Gas</span>
+          </button>
+          <button class="cat-chip" data-view="search" data-cat="Pintura" aria-label="Pintura" role="listitem">
+            <div class="cat-icon" style="background:#fdf4ff">🎨</div>
+            <span class="cat-label">Pintura</span>
+          </button>
+          <button class="cat-chip" data-view="search" data-cat="Albañilería" aria-label="Albañilería" role="listitem">
+            <div class="cat-icon" style="background:#fef3c7">🧱</div>
+            <span class="cat-label">Albañilería</span>
+          </button>
+          <button class="cat-chip" data-view="search" data-cat="Jardinería" aria-label="Jardinería" role="listitem">
+            <div class="cat-icon" style="background:#f0fdf4">🌱</div>
+            <span class="cat-label">Jardinería</span>
+          </button>
+          <button class="cat-chip" data-view="search" data-cat="Limpieza" aria-label="Limpieza" role="listitem">
+            <div class="cat-icon" style="background:#f0f9ff">🧹</div>
+            <span class="cat-label">Limpieza</span>
+          </button>
+          <button class="cat-chip" data-view="search" data-cat="Electrodomésticos" aria-label="Reparación de electrodomésticos" role="listitem">
+            <div class="cat-icon" style="background:#f5f3ff">🔧</div>
+            <span class="cat-label">Rep. de electro&shy;domésticos</span>
+          </button>
+          <button class="cat-chip" data-view="search" aria-label="Ver todas las categorías" role="listitem">
+            <div class="cat-icon" style="background:#f8fafc">⋯</div>
+            <span class="cat-label">Ver más</span>
+          </button>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- PRESTADORES DESTACADOS -->
+    <section class="max-w-7xl mx-auto px-4 mb-12" aria-label="Prestadores destacados">
+      <div class="flex items-center justify-between mb-5">
+        <h2 class="text-2xl font-bold text-slate-900">Prestadores destacados</h2>
+        <a href="#" data-view="search" class="text-sm font-semibold text-brand hover:underline flex items-center gap-1 focus-visible:outline-2 focus-visible:outline-brand rounded">
+          Ver todos
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </a>
+      </div>
+      <div id="home-providers-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+        <!-- Rendered by JS -->
+      </div>
+    </section>
+
+    <!-- ¿POR QUÉ MANOCERCA? -->
+    <section class="bg-white py-14 px-4" aria-label="Ventajas de ManoCerca">
+      <div class="max-w-7xl mx-auto">
+        <div class="flex flex-col md:flex-row gap-10 items-start">
+          <div class="flex-1">
+            <h2 class="text-2xl font-bold text-slate-900 mb-8">¿Por qué elegir ManoCerca?</h2>
+            <div class="grid grid-cols-2 gap-6">
+
+              <article class="flex flex-col gap-3">
+                <div class="w-12 h-12 rounded-xl flex items-center justify-center text-2xl" style="background:#eff6ff">🛡️</div>
+                <h3 class="font-bold text-slate-900">Seguridad</h3>
+                <p class="text-slate-500 text-sm leading-relaxed">Perfiles verificados y calificaciones reales.</p>
+              </article>
+
+              <article class="flex flex-col gap-3">
+                <div class="w-12 h-12 rounded-xl flex items-center justify-center text-2xl" style="background:#fffbeb">⭐</div>
+                <h3 class="font-bold text-slate-900">Confianza</h3>
+                <p class="text-slate-500 text-sm leading-relaxed">Leé reseñas de otros clientes y conocé la experiencia de cada prestador.</p>
+              </article>
+
+              <article class="flex flex-col gap-3">
+                <div class="w-12 h-12 rounded-xl flex items-center justify-center text-2xl" style="background:#f0fdf4">📍</div>
+                <h3 class="font-bold text-slate-900">Cercanía</h3>
+                <p class="text-slate-500 text-sm leading-relaxed">Encontrá profesionales en tu zona.</p>
+              </article>
+
+              <article class="flex flex-col gap-3">
+                <div class="w-12 h-12 rounded-xl flex items-center justify-center text-2xl" style="background:#fdf4ff">⚡</div>
+                <h3 class="font-bold text-slate-900">Rapidez</h3>
+                <p class="text-slate-500 text-sm leading-relaxed">Publicá tu solicitud y recibí propuestas en minutos.</p>
+              </article>
+
+            </div>
+          </div>
+
+          <!-- Decorative right card -->
+          <div class="hidden md:flex flex-col items-center justify-center w-64 flex-shrink-0">
+            <div class="bg-gradient-to-br from-blue-50 to-blue-100 rounded-3xl p-8 text-center shadow-inner">
+              <p class="text-slate-400 italic text-sm mb-3 font-medium">"Tu problema,<br>nuestra prioridad"</p>
+              <div class="text-6xl">🏠</div>
+              <div class="mt-4 flex gap-1 justify-center">
+                <span class="w-2 h-2 rounded-full bg-brand"></span>
+                <span class="w-2 h-2 rounded-full bg-blue-300"></span>
+                <span class="w-2 h-2 rounded-full bg-blue-200"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA BANNER — CUPÓN -->
+    <section class="bg-navy py-8 px-4" aria-label="Oferta de cupón de descuento">
+      <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
+        <div class="flex items-center gap-5 text-white">
+          <div class="w-14 h-14 bg-brand/30 rounded-2xl flex items-center justify-center text-3xl flex-shrink-0">🎁</div>
+          <div>
+            <p class="font-bold text-lg">¿Hace tiempo que no usás ManoCerca?</p>
+            <p class="text-slate-400 text-sm mt-0.5">Te regalamos un cupón de descuento para tu próximo servicio.</p>
+          </div>
+        </div>
+        <button class="btn btn-primary !w-auto px-7 whitespace-nowrap flex-shrink-0 !rounded-xl" aria-label="Ver mi cupón de descuento">
+          Ver mi cupón →
+        </button>
+      </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="bg-navy pt-12 pb-6 px-4" role="contentinfo">
+      <div class="max-w-7xl mx-auto">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-10 mb-10">
+
+          <!-- Brand -->
+          <div class="md:col-span-1">
+            <div class="flex items-center gap-2 mb-3">
+              <div class="w-8 h-8 bg-brand rounded-lg flex items-center justify-center">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+              </div>
+              <span class="font-bold text-lg text-white">ManoCerca</span>
+            </div>
+            <p class="text-slate-500 text-sm leading-relaxed">Servicios locales, más cerca tuyo.</p>
+          </div>
+
+          <!-- Categorías -->
+          <div>
+            <p class="footer-col-title">Categorías</p>
+            <a href="#" class="footer-link">Plomería</a>
+            <a href="#" class="footer-link">Electricidad</a>
+            <a href="#" class="footer-link">Gas</a>
+            <a href="#" class="footer-link">Pintura</a>
+            <a href="#" class="footer-link">Albañilería</a>
+            <a href="#" class="footer-link">Ver más</a>
+          </div>
+
+          <!-- Links útiles -->
+          <div>
+            <p class="footer-col-title">Links útiles</p>
+            <a href="#" class="footer-link">Cómo funciona</a>
+            <a href="#" class="footer-link">Términos y condiciones</a>
+            <a href="#" class="footer-link">Política de privacidad</a>
+            <a href="#" class="footer-link">Centro de ayuda</a>
+          </div>
+
+          <!-- Seguinos -->
+          <div>
+            <p class="footer-col-title">Seguinos</p>
+            <div class="flex gap-3">
+              <a href="#" class="w-10 h-10 bg-white/10 hover:bg-brand rounded-lg flex items-center justify-center transition-colors focus-visible:outline-2 focus-visible:outline-white" aria-label="Instagram">
+                <span class="text-lg">📷</span>
+              </a>
+              <a href="#" class="w-10 h-10 bg-white/10 hover:bg-brand rounded-lg flex items-center justify-center transition-colors focus-visible:outline-2 focus-visible:outline-white" aria-label="Facebook">
+                <span class="text-lg">f</span>
+              </a>
+              <a href="#" class="w-10 h-10 bg-white/10 hover:bg-brand rounded-lg flex items-center justify-center transition-colors focus-visible:outline-2 focus-visible:outline-white" aria-label="X / Twitter">
+                <span class="text-base font-bold text-white">𝕏</span>
+              </a>
+              <a href="#" class="w-10 h-10 bg-white/10 hover:bg-brand rounded-lg flex items-center justify-center transition-colors focus-visible:outline-2 focus-visible:outline-white" aria-label="YouTube">
+                <span class="text-lg">▶</span>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <div class="border-t border-white/10 pt-6 flex flex-col md:flex-row items-center justify-between gap-2 text-xs text-slate-600">
+          <span>© 2025 ManoCerca. Todos los derechos reservados.</span>
+          <span class="flex items-center gap-1">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            Río Cuarto, Córdoba
+          </span>
+        </div>
+      </div>
+    </footer>
+
+  </section><!-- /view-home -->
+
+
+  <!-- ─────────────────────────────────────────────
+       VISTA 2: BUSCAR PRESTADORES
+  ───────────────────────────────────────────── -->
+  <section id="view-search" class="view" aria-label="Buscar prestadores">
+
+    <!-- Mobile Header -->
+    <div class="mobile-header md:hidden">
+      <button class="back-btn" data-view="home" aria-label="Volver al inicio">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="15 18 9 12 15 6"/></svg>
+      </button>
+      <span class="font-bold text-base flex-1">Buscar servicios</span>
+      <button class="btn-icon" aria-label="Filtros">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="6" x2="20" y2="6"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="11" y1="18" x2="13" y2="18"/></svg>
+      </button>
+    </div>
+
+    <div class="max-w-3xl mx-auto px-4 pt-4 pb-8">
+
+      <!-- Search input -->
+      <div class="search-wrap mb-4">
+        <div class="flex-1 flex items-center gap-3 px-4 py-3">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="flex-shrink-0"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <input id="search-input" type="search" placeholder="Buscar un servicio..."
+                 class="flex-1 outline-none text-slate-700 placeholder-slate-400 text-sm bg-transparent"
+                 aria-label="Buscar servicio" />
+        </div>
+      </div>
+
+      <!-- Filter chips -->
+      <div class="flex gap-2 overflow-x-auto no-scrollbar pb-1 mb-5" role="group" aria-label="Filtrar por categoría">
+        <button class="filter-chip active" data-filter="Todos" aria-pressed="true">Todos</button>
+        <button class="filter-chip" data-filter="Plomería" aria-pressed="false">Plomería</button>
+        <button class="filter-chip" data-filter="Electricidad" aria-pressed="false">Electricidad</button>
+        <button class="filter-chip" data-filter="Gas" aria-pressed="false">Gas</button>
+        <button class="filter-chip" data-filter="Pintura" aria-pressed="false">Pintura</button>
+        <button class="filter-chip" data-filter="Albañilería" aria-pressed="false">Albañilería</button>
+        <button class="filter-chip" data-filter="Limpieza" aria-pressed="false">Limpieza</button>
+        <button class="filter-chip" data-filter="Jardinería" aria-pressed="false">Jardinería</button>
+      </div>
+
+      <!-- Results count -->
+      <p id="search-results-count" class="text-sm font-semibold text-slate-500 mb-4">4 resultados</p>
+
+      <!-- Provider list -->
+      <div id="search-list" class="flex flex-col gap-3" role="list" aria-label="Listado de prestadores">
+        <!-- Rendered by JS -->
+      </div>
+
+    </div>
+  </section><!-- /view-search -->
+
+
+  <!-- ─────────────────────────────────────────────
+       VISTA 3: PERFIL DEL PRESTADOR
+  ───────────────────────────────────────────── -->
+  <section id="view-profile" class="view" aria-label="Perfil del prestador">
+
+    <!-- Header -->
+    <div class="mobile-header">
+      <button class="back-btn" data-view="search" aria-label="Volver">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="15 18 9 12 15 6"/></svg>
+      </button>
+      <span class="font-bold text-base flex-1">Perfil del prestador</span>
+      <button class="btn-icon" aria-label="Compartir perfil">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+      </button>
+    </div>
+
+    <!-- Cover -->
+    <div class="profile-cover relative">
+      <div class="absolute inset-0 flex items-center justify-center opacity-10" aria-hidden="true">
+        <svg width="120" height="120" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+      </div>
+    </div>
+
+    <div class="max-w-xl mx-auto px-4">
+      <!-- Avatar (overlapping cover) -->
+      <div class="flex justify-center -mt-10 mb-3">
+        <div class="avatar avatar-xl av-blue avatar-verified avatar-border" aria-label="Juan Pérez — Identidad verificada">JP</div>
+      </div>
+
+      <!-- Name & Info -->
+      <div class="text-center mb-5">
+        <h1 class="text-xl font-bold text-slate-900">Juan Pérez</h1>
+        <p class="text-brand font-semibold text-sm mt-0.5">Plomero</p>
+        <div class="flex items-center justify-center gap-3 mt-2 text-sm text-slate-500 flex-wrap">
+          <span class="flex items-center gap-1">
+            <span class="text-amber-400">⭐</span>
+            <strong class="text-slate-700">4.8</strong> (42 reseñas)
+          </span>
+          <span>·</span>
+          <span>37 trabajos realizados</span>
+        </div>
+        <div class="flex items-center justify-center gap-1.5 mt-1 text-sm text-slate-400">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          2.4 km · Río Cuarto, Córdoba
+        </div>
+        <div class="flex items-center justify-center gap-2 mt-3">
+          <span class="badge badge-blue">✓ Identidad verificada</span>
+          <span class="badge badge-green"><span class="pulse-dot mr-1"></span>Disponible hoy</span>
+        </div>
+      </div>
+
+      <!-- Sobre mí -->
+      <div class="card p-5 mb-4">
+        <h2 class="font-bold text-slate-900 mb-2">Sobre mí</h2>
+        <p class="text-slate-500 text-sm leading-relaxed">
+          Técnico en plomería con más de 8 años de experiencia. Realizo instalaciones, reparaciones y mantenimiento en hogares y comercios. Trabajo con responsabilidad y compromiso.
+        </p>
+      </div>
+
+      <!-- Servicios que ofrece -->
+      <div class="card p-5 mb-6">
+        <h2 class="font-bold text-slate-900 mb-3">Servicios</h2>
+        <ul class="flex flex-col gap-2" role="list">
+          <li class="flex items-center gap-3 py-2.5 border-b border-slate-100 last:border-0">
+            <div class="w-8 h-8 rounded-lg bg-blue-50 flex items-center justify-center text-base">💧</div>
+            <span class="text-sm text-slate-700 font-medium">Reparación de cañerías</span>
+          </li>
+          <li class="flex items-center gap-3 py-2.5 border-b border-slate-100 last:border-0">
+            <div class="w-8 h-8 rounded-lg bg-blue-50 flex items-center justify-center text-base">🚿</div>
+            <span class="text-sm text-slate-700 font-medium">Instalación de sanitarios</span>
+          </li>
+          <li class="flex items-center gap-3 py-2.5 border-b border-slate-100 last:border-0">
+            <div class="w-8 h-8 rounded-lg bg-blue-50 flex items-center justify-center text-base">🔧</div>
+            <span class="text-sm text-slate-700 font-medium">Destapaciones</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- CTA -->
+      <div class="pb-6">
+        <button class="btn btn-primary" data-view="contratar" aria-label="Contactar a Juan Pérez">Contactar</button>
+      </div>
+    </div>
+
+  </section><!-- /view-profile -->
+
+
+  <!-- ─────────────────────────────────────────────
+       VISTA 4: DETALLE DE SOLICITUD
+  ───────────────────────────────────────────── -->
+  <section id="view-solicitud" class="view" aria-label="Detalle de solicitud">
+
+    <div class="mobile-header">
+      <button class="back-btn" data-view="solicitudes" aria-label="Volver">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="15 18 9 12 15 6"/></svg>
+      </button>
+      <span class="font-bold text-base flex-1">Detalle de solicitud</span>
+      <button class="btn-icon" aria-label="Compartir solicitud">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+      </button>
+    </div>
+
+    <div class="max-w-xl mx-auto px-4 py-5">
+
+      <!-- Urgency + Title -->
+      <div class="flex items-center justify-between mb-3">
+        <div class="flex items-center gap-2">
+          <span class="text-2xl">💧</span>
+          <h1 class="font-bold text-lg text-slate-900">Pérdida de agua en la cocina</h1>
+        </div>
+        <span class="badge badge-red"><span class="pulse-dot mr-1"></span>Urgente</span>
+      </div>
+
+      <!-- Description -->
+      <p class="text-slate-500 text-sm leading-relaxed mb-4">
+        Se rompió un caño debajo de la pileta. La pérdida es grande. Necesito que venga lo antes posible para arreglarlo.
+      </p>
+
+      <!-- Details -->
+      <div class="card p-4 mb-4 flex flex-col gap-3">
+        <div class="flex items-center gap-3 text-sm">
+          <span class="text-base">🕐</span>
+          <span class="text-slate-500">Hoy, 18:00 – 21:00</span>
+        </div>
+        <div class="flex items-center gap-3 text-sm">
+          <span class="text-base">📍</span>
+          <span class="text-slate-500">Río Cuarto, Córdoba (zona centro)</span>
+        </div>
+        <div class="flex items-center gap-3 text-sm">
+          <span class="text-base">💰</span>
+          <span class="text-slate-500">Presupuesto estimado: $20.000 – $30.000</span>
+        </div>
+      </div>
+
+      <!-- Photos -->
+      <div class="mb-5">
+        <p class="font-semibold text-sm text-slate-700 mb-3">Fotos (2)</p>
+        <div class="flex gap-3">
+          <div class="photo-thumb" aria-label="Foto 1 de la pérdida">💦</div>
+          <div class="photo-thumb" aria-label="Foto 2 de la pérdida">🔩</div>
+          <div class="photo-thumb border-2 border-dashed border-slate-200 bg-white cursor-pointer hover:bg-slate-50 transition-colors" aria-label="Agregar foto">
+            <span class="text-slate-400 text-2xl">+</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Propuestas -->
+      <div class="mb-6">
+        <div class="flex items-center justify-between mb-3">
+          <p class="font-bold text-slate-900">Propuestas (3)</p>
+          <a href="#" class="text-sm text-brand font-semibold hover:underline focus-visible:outline-2 focus-visible:outline-brand rounded">Ver todas</a>
+        </div>
+        <div class="flex flex-col gap-3">
+
+          <!-- Propuesta 1 -->
+          <div class="card p-4 flex items-center gap-3">
+            <div class="avatar avatar-sm av-blue avatar-verified">JP</div>
+            <div class="flex-1">
+              <p class="font-semibold text-sm text-slate-900">Juan Pérez</p>
+              <div class="flex items-center gap-1 text-xs text-slate-400">
+                <span class="text-amber-400">★</span> 4.8
+                <span class="mx-1">·</span>
+                Hoy, 19:00
+              </div>
+            </div>
+            <div class="text-right">
+              <p class="font-bold text-slate-900 text-sm">$25.000</p>
+              <button class="btn btn-primary !py-1.5 !px-4 !text-xs !w-auto mt-1" data-view="contratar" aria-label="Ver propuesta de Juan Pérez">
+                Ver propuesta
+              </button>
+            </div>
+          </div>
+
+          <!-- Propuesta 2 -->
+          <div class="card p-4 flex items-center gap-3">
+            <div class="avatar avatar-sm av-violet avatar-verified">ML</div>
+            <div class="flex-1">
+              <p class="font-semibold text-sm text-slate-900">Martín López</p>
+              <div class="flex items-center gap-1 text-xs text-slate-400">
+                <span class="text-amber-400">★</span> 4.6
+                <span class="mx-1">·</span>
+                Hoy, 18:30
+              </div>
+            </div>
+            <div class="text-right">
+              <p class="font-bold text-slate-900 text-sm">$22.000</p>
+              <button class="btn btn-secondary !py-1.5 !px-4 !text-xs !w-auto mt-1" data-view="contratar" aria-label="Ver propuesta de Martín López">
+                Ver propuesta
+              </button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section><!-- /view-solicitud -->
+
+
+  <!-- ─────────────────────────────────────────────
+       VISTA 5: CHAT
+  ───────────────────────────────────────────── -->
+  <section id="view-chat" class="view" aria-label="Chat con el prestador" style="display:none">
+
+    <!-- Chat Header -->
+    <div class="mobile-header border-b border-slate-200">
+      <button class="back-btn" data-view="solicitud" aria-label="Volver">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="15 18 9 12 15 6"/></svg>
+      </button>
+      <div class="flex items-center gap-3 flex-1">
+        <div class="avatar avatar-sm av-blue avatar-verified">JP</div>
+        <div>
+          <p class="font-bold text-sm text-slate-900">Juan Pérez</p>
+          <p class="text-xs text-green-500 font-medium flex items-center gap-1">
+            <span class="w-1.5 h-1.5 rounded-full bg-green-500 inline-block"></span>En línea
+          </p>
+        </div>
+      </div>
+      <button class="btn-icon" aria-label="Más opciones">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/></svg>
+      </button>
+    </div>
+
+    <!-- Messages area -->
+    <div id="chat-messages" class="flex flex-col gap-3 px-4 py-5 overflow-y-auto" style="height: calc(100dvh - 140px);" role="log" aria-live="polite" aria-label="Mensajes del chat">
+
+      <!-- Received -->
+      <div class="flex flex-col">
+        <div class="chat-bubble chat-received">
+          Hola Juan! ¿Podés venir hoy por la tarde? Estoy en la zona centro.
+        </div>
+        <span class="chat-time">16:24</span>
+      </div>
+
+      <!-- Sent -->
+      <div class="flex flex-col items-end">
+        <div class="chat-bubble chat-sent">
+          Hola! Sí, puedo ir a las 19:00. ¿La pérdida es grande o es solo una filtración?
+        </div>
+        <span class="chat-time chat-time-sent">16:36</span>
+      </div>
+
+      <!-- Received -->
+      <div class="flex flex-col">
+        <div class="chat-bubble chat-received">
+          Es una filtración, no es muy grande. Te paso una foto.
+        </div>
+        <span class="chat-time">16:37</span>
+      </div>
+
+      <!-- Photo message received -->
+      <div class="flex flex-col max-w-[75%]">
+        <div class="photo-thumb !w-48 !h-32 !rounded-xl border-0 text-4xl" style="background:#dbeafe" aria-label="Foto enviada de la filtración">💦</div>
+        <span class="chat-time">16:38</span>
+      </div>
+
+      <!-- Sent -->
+      <div class="flex flex-col items-end">
+        <div class="chat-bubble chat-sent">
+          Perfecto, con eso alcanza. Te paso el presupuesto: $25.000. ¿Te parece bien?
+        </div>
+        <span class="chat-time chat-time-sent">16:52</span>
+      </div>
+
+    </div>
+
+    <!-- Input Bar -->
+    <div class="fixed bottom-[72px] md:bottom-0 left-0 right-0 bg-white border-t border-slate-200 px-4 py-3 flex items-center gap-3">
+      <button class="btn-icon" aria-label="Adjuntar archivo">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg>
+      </button>
+      <input id="chat-input" type="text" placeholder="Escribí un mensaje..."
+             class="input !py-2 !px-3 !border !border-slate-200 text-sm"
+             aria-label="Escribir mensaje en el chat" />
+      <button id="chat-send-btn" class="btn btn-primary !w-auto !py-2 !px-4 !rounded-full" aria-label="Enviar mensaje">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+      </button>
+    </div>
+
+  </section><!-- /view-chat -->
+
+
+  <!-- ─────────────────────────────────────────────
+       VISTA 6: CONFIRMAR CONTRATACIÓN
+  ───────────────────────────────────────────── -->
+  <section id="view-contratar" class="view" aria-label="Confirmar contratación">
+
+    <div class="mobile-header">
+      <button class="back-btn" data-view="solicitud" aria-label="Volver">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="15 18 9 12 15 6"/></svg>
+      </button>
+      <span class="font-bold text-base flex-1">Confirmar contratación</span>
+    </div>
+
+    <div class="max-w-xl mx-auto px-4 py-5">
+
+      <!-- Provider summary -->
+      <div class="card p-4 flex items-center gap-4 mb-5">
+        <div class="avatar avatar-md av-blue avatar-verified">JP</div>
+        <div>
+          <p class="font-bold text-slate-900">Juan Pérez</p>
+          <p class="text-sm text-slate-500">Plomero</p>
+          <div class="flex items-center gap-1 text-xs text-slate-400 mt-0.5">
+            <span class="text-amber-400">★</span> 4.8 (42 reseñas)
+          </div>
+        </div>
+      </div>
+
+      <!-- Job summary card -->
+      <div class="card p-5 mb-5">
+        <h2 class="font-bold text-slate-700 text-sm mb-3 uppercase tracking-wide">Resumen</h2>
+        <div class="flex flex-col gap-3">
+          <div class="flex justify-between text-sm">
+            <span class="text-slate-500">Servicio</span>
+            <span class="font-medium text-slate-800">Reparación de cañería</span>
+          </div>
+          <div class="flex justify-between text-sm">
+            <span class="text-slate-500">Precio</span>
+            <span class="font-bold text-slate-900 text-base">$25.000</span>
+          </div>
+          <div class="flex justify-between text-sm">
+            <span class="text-slate-500">Fecha y horario</span>
+            <span class="font-medium text-slate-800">Hoy, 19:00</span>
+          </div>
+          <div class="flex justify-between text-sm">
+            <span class="text-slate-500">Ubicación</span>
+            <span class="font-medium text-slate-800">Río Cuarto, Córdoba</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Terms checkbox -->
+      <label class="flex items-start gap-3 mb-6 cursor-pointer group" id="terms-label">
+        <input type="checkbox" id="terms-check" class="mt-1 w-5 h-5 rounded accent-brand cursor-pointer flex-shrink-0"
+               aria-describedby="terms-desc" />
+        <span id="terms-desc" class="text-sm text-slate-500 leading-relaxed">
+          Acepto los <a href="#" class="text-brand font-medium hover:underline focus-visible:outline-2 focus-visible:outline-brand rounded">términos y condiciones</a> de la plataforma.
+        </span>
+      </label>
+
+      <!-- Confirm CTA -->
+      <button id="confirm-hire-btn" class="btn btn-primary" disabled aria-label="Confirmar y contratar a Juan Pérez"
+              aria-describedby="terms-desc">
+        Confirmar y contratar
+      </button>
+
+    </div>
+  </section><!-- /view-contratar -->
+
+
+  <!-- ─────────────────────────────────────────────
+       VISTA 7: TRABAJO EN CURSO
+  ───────────────────────────────────────────── -->
+  <section id="view-trabajo" class="view" aria-label="Seguimiento del trabajo">
+
+    <div class="mobile-header">
+      <button class="back-btn" data-view="solicitudes" aria-label="Volver">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="15 18 9 12 15 6"/></svg>
+      </button>
+      <span class="font-bold text-base flex-1">Mi trabajo</span>
+    </div>
+
+    <div class="max-w-xl mx-auto px-4 py-5">
+
+      <!-- Progress steps -->
+      <div class="card p-5 mb-5">
+        <div class="steps-bar" role="progressbar" aria-label="Estado del trabajo" aria-valuenow="2" aria-valuemin="1" aria-valuemax="4">
+          <div class="step-item completed">
+            <div class="step-dot completed">✓</div>
+            <span class="step-text completed">Contratado</span>
+          </div>
+          <div class="step-item completed">
+            <div class="step-dot current">→</div>
+            <span class="step-text current">En camino</span>
+          </div>
+          <div class="step-item">
+            <div class="step-dot">3</div>
+            <span class="step-text">En curso</span>
+          </div>
+          <div class="step-item">
+            <div class="step-dot">4</div>
+            <span class="step-text">Finalizado</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Map placeholder -->
+      <div class="map-mock h-52 mb-5 flex items-center justify-center" aria-label="Mapa de seguimiento del prestador (simulado)">
+        <div class="relative z-10 flex flex-col items-center gap-2">
+          <div class="map-pin">
+            <div class="map-pin-inner"></div>
+          </div>
+          <p class="text-xs text-slate-500 font-medium bg-white px-2 py-0.5 rounded-full shadow">Zona centro</p>
+        </div>
+      </div>
+
+      <!-- Provider status -->
+      <div class="card p-4 flex items-center gap-4 mb-5">
+        <div class="avatar avatar-md av-blue">JP</div>
+        <div class="flex-1">
+          <p class="font-bold text-slate-900 text-sm">Juan Pérez está en camino</p>
+          <p class="text-xs text-slate-400 mt-0.5">🕐 Llegada estimada: 18:45</p>
+          <p class="text-xs text-slate-400">📍 2.3 km</p>
+        </div>
+      </div>
+
+      <!-- Job details -->
+      <div class="card p-4 mb-5">
+        <h2 class="font-semibold text-slate-700 text-sm mb-3">Detalles del trabajo</h2>
+        <div class="flex justify-between text-sm mb-2">
+          <span class="text-slate-500">Reparación de cañería</span>
+          <span class="font-bold text-slate-900">$25.000</span>
+        </div>
+        <div class="flex items-center gap-1.5 text-xs text-slate-400">
+          <span>🕐 Hoy, 19:00</span>
+          <span>·</span>
+          <span>📍 Zona centro</span>
+        </div>
+      </div>
+
+      <!-- Actions -->
+      <div class="flex gap-3">
+        <button class="btn btn-secondary flex-1" data-view="chat" aria-label="Abrir chat con el prestador">Ver chat</button>
+        <button class="btn btn-danger flex-1" id="cancel-job-btn" aria-label="Cancelar trabajo">Cancelar trabajo</button>
+      </div>
+
+    </div>
+  </section><!-- /view-trabajo -->
+
+
+  <!-- ─────────────────────────────────────────────
+       VISTA 8: FINALIZAR Y CALIFICAR
+  ───────────────────────────────────────────── -->
+  <section id="view-calificar" class="view" aria-label="Calificar el trabajo finalizado">
+
+    <div class="mobile-header">
+      <button class="back-btn" data-view="solicitudes" aria-label="Volver">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="15 18 9 12 15 6"/></svg>
+      </button>
+      <span class="font-bold text-base flex-1">Calificar servicio</span>
+    </div>
+
+    <div class="max-w-xl mx-auto px-4 py-8 text-center">
+
+      <!-- Success icon -->
+      <div class="pop-in w-24 h-24 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-5" aria-hidden="true">
+        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#16A34A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+      </div>
+
+      <h1 class="text-2xl font-extrabold text-slate-900 mb-2">¡Trabajo finalizado!</h1>
+      <p class="text-slate-400 text-sm mb-7">El servicio se completó correctamente.<br>Ahora podés calificar al prestador.</p>
+
+      <!-- Provider summary -->
+      <div class="flex items-center justify-center gap-4 mb-8">
+        <div class="avatar avatar-lg av-blue avatar-verified">JP</div>
+        <div class="text-left">
+          <p class="font-bold text-slate-900">Juan Pérez</p>
+          <p class="text-sm text-slate-500">Plomero</p>
+          <div class="flex items-center gap-1 text-xs text-slate-400">
+            <span class="text-amber-400">★</span> 4.8 (42 reseñas)
+          </div>
+        </div>
+      </div>
+
+      <!-- Stars -->
+      <p class="text-sm font-semibold text-slate-700 mb-3">Tu calificación</p>
+      <div id="star-rating" class="flex justify-center gap-1 mb-6" role="group" aria-label="Seleccionar calificación con estrellas">
+        <button class="star-rate" data-star="1" aria-label="1 estrella" aria-pressed="false">★</button>
+        <button class="star-rate" data-star="2" aria-label="2 estrellas" aria-pressed="false">★</button>
+        <button class="star-rate" data-star="3" aria-label="3 estrellas" aria-pressed="false">★</button>
+        <button class="star-rate" data-star="4" aria-label="4 estrellas" aria-pressed="false">★</button>
+        <button class="star-rate" data-star="5" aria-label="5 estrellas" aria-pressed="false">★</button>
+      </div>
+
+      <!-- Review text -->
+      <textarea id="review-text"
+                class="input !text-sm resize-none mb-5 text-left"
+                rows="3"
+                placeholder="Contanos tu experiencia (opcional)..."
+                aria-label="Escribir reseña opcional"></textarea>
+
+      <!-- Submit -->
+      <button id="submit-review-btn" class="btn btn-primary" aria-label="Enviar calificación">
+        Enviar calificación
+      </button>
+    </div>
+
+  </section><!-- /view-calificar -->
+
+
+  <!-- ─────────────────────────────────────────────
+       VISTA 9: MIS SOLICITUDES / HISTORIAL
+  ───────────────────────────────────────────── -->
+  <section id="view-solicitudes" class="view" aria-label="Mis solicitudes">
+
+    <div class="mobile-header">
+      <span class="font-bold text-base flex-1">Mis solicitudes</span>
+      <button class="btn-icon" aria-label="Filtros y opciones">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="6" x2="20" y2="6"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="11" y1="18" x2="13" y2="18"/></svg>
+      </button>
+    </div>
+
+    <div class="max-w-xl mx-auto px-4 py-4">
+
+      <!-- Tabs -->
+      <div class="flex gap-2 mb-4" role="tablist" aria-label="Filtrar solicitudes">
+        <button class="filter-chip active" data-tab="activas" role="tab" aria-selected="true" aria-controls="solicitudes-list">Activas</button>
+        <button class="filter-chip" data-tab="finalizadas" role="tab" aria-selected="false" aria-controls="solicitudes-list">Finalizadas</button>
+        <button class="filter-chip" data-tab="canceladas" role="tab" aria-selected="false" aria-controls="solicitudes-list">Canceladas</button>
+      </div>
+
+      <!-- List -->
+      <div id="solicitudes-list" class="flex flex-col gap-3" role="list">
+
+        <!-- En curso -->
+        <button class="card p-4 flex items-center gap-4 text-left w-full card-hover" data-view="solicitud"
+                aria-label="Ver solicitud: Pérdida de agua en la cocina — En curso">
+          <div class="w-12 h-12 rounded-xl flex items-center justify-center text-2xl flex-shrink-0" style="background:#eff6ff">💧</div>
+          <div class="flex-1 min-w-0">
+            <div class="flex items-center justify-between mb-0.5">
+              <p class="font-bold text-sm text-slate-900 truncate">Pérdida de agua en la cocina</p>
+              <span class="badge badge-blue ml-2 flex-shrink-0">En curso</span>
+            </div>
+            <p class="text-xs text-slate-400">Plomería</p>
+            <div class="flex items-center gap-2 text-xs text-slate-400 mt-1">
+              <span>🕐 Hoy, 19:00 – 21:00</span>
+            </div>
+            <div class="flex items-center justify-between mt-1">
+              <span class="text-xs text-slate-500">Juan Pérez</span>
+              <span class="text-sm font-bold text-slate-900">$25.000</span>
+            </div>
+          </div>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg>
+        </button>
+
+        <!-- Finalizada -->
+        <button class="card p-4 flex items-center gap-4 text-left w-full card-hover" data-view="calificar"
+                aria-label="Ver solicitud: Instalación de ventilador — Finalizada">
+          <div class="w-12 h-12 rounded-xl flex items-center justify-center text-2xl flex-shrink-0" style="background:#fffbeb">⚡</div>
+          <div class="flex-1 min-w-0">
+            <div class="flex items-center justify-between mb-0.5">
+              <p class="font-bold text-sm text-slate-900 truncate">Instalación de ventilador de techo</p>
+              <span class="badge badge-green ml-2 flex-shrink-0">Finalizada</span>
+            </div>
+            <p class="text-xs text-slate-400">Electricidad</p>
+            <div class="flex items-center gap-2 text-xs text-slate-400 mt-1">
+              <span>📅 12 mar, 2025</span>
+            </div>
+            <div class="flex items-center justify-between mt-1">
+              <span class="text-xs text-slate-500">Martín López</span>
+              <span class="text-sm font-bold text-slate-900">$18.000</span>
+            </div>
+          </div>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg>
+        </button>
+
+        <!-- Finalizada 2 -->
+        <button class="card p-4 flex items-center gap-4 text-left w-full card-hover"
+                aria-label="Ver solicitud: Pintar habitación — Finalizada">
+          <div class="w-12 h-12 rounded-xl flex items-center justify-center text-2xl flex-shrink-0" style="background:#fdf4ff">🎨</div>
+          <div class="flex-1 min-w-0">
+            <div class="flex items-center justify-between mb-0.5">
+              <p class="font-bold text-sm text-slate-900 truncate">Pintar habitación</p>
+              <span class="badge badge-green ml-2 flex-shrink-0">Finalizada</span>
+            </div>
+            <p class="text-xs text-slate-400">Pintura</p>
+            <div class="flex items-center gap-2 text-xs text-slate-400 mt-1">
+              <span>📅 5 mar, 2025</span>
+            </div>
+            <div class="flex items-center justify-between mt-1">
+              <span class="text-xs text-slate-500">Carlos Gómez</span>
+              <span class="text-sm font-bold text-slate-900">$35.000</span>
+            </div>
+          </div>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg>
+        </button>
+
+        <!-- Cancelada -->
+        <div class="card p-4 flex items-center gap-4 opacity-70">
+          <div class="w-12 h-12 rounded-xl flex items-center justify-center text-2xl flex-shrink-0" style="background:#fef3c7">🔥</div>
+          <div class="flex-1 min-w-0">
+            <div class="flex items-center justify-between mb-0.5">
+              <p class="font-bold text-sm text-slate-900 truncate">Reparación de calefón</p>
+              <span class="badge badge-red ml-2 flex-shrink-0">Cancelada</span>
+            </div>
+            <p class="text-xs text-slate-400">Gas</p>
+            <div class="flex items-center gap-2 text-xs text-slate-400 mt-1">
+              <span>📅 28 feb, 2025</span>
+            </div>
+            <div class="flex items-center justify-between mt-1">
+              <span class="text-xs text-slate-500">Sin asignar</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </section><!-- /view-solicitudes -->
+
+
+  <!-- ─────────────────────────────────────────────
+       VISTA 10: MI PERFIL / AJUSTES
+  ───────────────────────────────────────────── -->
+  <section id="view-mi-perfil" class="view" aria-label="Mi perfil y ajustes">
+
+    <!-- Cover decorativo -->
+    <div class="profile-cover"></div>
+
+    <div class="max-w-xl mx-auto px-4 -mt-10 pb-8">
+
+      <!-- Avatar + User info -->
+      <div class="flex flex-col items-center mb-6">
+        <div class="w-20 h-20 rounded-full bg-brand border-4 border-white flex items-center justify-center text-white text-3xl font-bold shadow mb-3"
+             aria-label="Avatar de María González">MG</div>
+        <h1 class="font-extrabold text-xl text-slate-900">María González</h1>
+        <p class="text-slate-400 text-sm mt-0.5">maria@email.com</p>
+      </div>
+
+      <!-- Settings list -->
+      <nav class="card p-2" aria-label="Opciones de perfil">
+        <ul role="list">
+          <li>
+            <a href="#" class="settings-row" aria-label="Mis datos personales">
+              <div class="flex items-center gap-3">
+                <div class="w-9 h-9 rounded-xl bg-slate-100 flex items-center justify-center text-base">👤</div>
+                <span class="font-medium text-sm text-slate-800">Mis datos</span>
+              </div>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg>
+            </a>
+          </li>
+          <li>
+            <a href="#" class="settings-row" aria-label="Mis direcciones guardadas">
+              <div class="flex items-center gap-3">
+                <div class="w-9 h-9 rounded-xl bg-slate-100 flex items-center justify-center text-base">📍</div>
+                <span class="font-medium text-sm text-slate-800">Direcciones</span>
+              </div>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg>
+            </a>
+          </li>
+          <li>
+            <a href="#" class="settings-row" aria-label="Métodos de pago">
+              <div class="flex items-center gap-3">
+                <div class="w-9 h-9 rounded-xl bg-slate-100 flex items-center justify-center text-base">💳</div>
+                <span class="font-medium text-sm text-slate-800">Métodos de pago</span>
+              </div>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg>
+            </a>
+          </li>
+          <li>
+            <a href="#" class="settings-row" aria-label="Notificaciones">
+              <div class="flex items-center gap-3">
+                <div class="w-9 h-9 rounded-xl bg-slate-100 flex items-center justify-center text-base">🔔</div>
+                <span class="font-medium text-sm text-slate-800">Notificaciones</span>
+              </div>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg>
+            </a>
+          </li>
+          <li>
+            <a href="#" class="settings-row" aria-label="Seguridad">
+              <div class="flex items-center gap-3">
+                <div class="w-9 h-9 rounded-xl bg-slate-100 flex items-center justify-center text-base">🔒</div>
+                <span class="font-medium text-sm text-slate-800">Seguridad</span>
+              </div>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg>
+            </a>
+          </li>
+          <li>
+            <a href="#" class="settings-row" aria-label="Ayuda y soporte">
+              <div class="flex items-center gap-3">
+                <div class="w-9 h-9 rounded-xl bg-slate-100 flex items-center justify-center text-base">❓</div>
+                <span class="font-medium text-sm text-slate-800">Ayuda y soporte</span>
+              </div>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg>
+            </a>
+          </li>
+          <li>
+            <button class="settings-row w-full text-left" id="logout-btn" aria-label="Cerrar sesión">
+              <div class="flex items-center gap-3">
+                <div class="w-9 h-9 rounded-xl bg-red-50 flex items-center justify-center text-base">↩️</div>
+                <span class="font-medium text-sm text-red-600">Cerrar sesión</span>
+              </div>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#dc2626" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg>
+            </button>
+          </li>
+        </ul>
+      </nav>
+
+    </div>
+  </section><!-- /view-mi-perfil -->
+
+</main><!-- /app -->
+
+
+<!-- ═══════════════════════════════════════════════════════════════
+     BOTTOM NAV — mobile only (CSS)
+═══════════════════════════════════════════════════════════════ -->
+<nav id="bottom-nav" class="fixed bottom-0 left-0 right-0 bg-white border-t border-slate-200 z-50 justify-around items-center py-1 px-2"
+     role="navigation" aria-label="Navegación principal">
+
+  <button class="bnav-btn active" data-view="home" aria-label="Inicio" aria-current="page">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+    <span class="bnav-label">Inicio</span>
+  </button>
+
+  <button class="bnav-btn" data-view="solicitudes" aria-label="Mis solicitudes">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+    <span class="bnav-label">Solicitudes</span>
+  </button>
+
+  <button class="bnav-btn" data-view="chat" aria-label="Mensajes">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+    <span class="bnav-label">Mensajes</span>
+  </button>
+
+  <button class="bnav-btn" data-view="mi-perfil" aria-label="Mi perfil">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+    <span class="bnav-label">Perfil</span>
+  </button>
+
+</nav>
+
+<!-- TOAST Notification -->
+<div id="toast" role="status" aria-live="polite" aria-atomic="true"></div>
+
+<script src="app.js"></script>
+</body>
+</html>
