@@ -21,3 +21,19 @@
   - *Solución*: Aplicar `overflow-x: hidden` en la etiqueta contenedora principal y asegurar `w-full max-w-full`.
 - **Botones Difíciles de Tocar**: Botones pequeños en pantallas táctiles.
   - *Solución*: Garantizar tamaño mínimo del área interactiva de $44\text{px} \times 44\text{px}$ en celulares (`min-h-[44px]`).
+
+## 5. Hallazgos del ciclo SDD del 2026-10-21
+- **`text-slate-400` sobre blanco (2.6:1)**: no cumple AA.
+  - *Solución*: usar `text-slate-500` (4.8:1) como mínimo para texto; en fondos oscuros, `text-slate-400` o más claro.
+- **Badges verdes/rojos/ámbar con poco contraste**: `#16A34A` sobre `#f0fdf4` ≈ 3.1:1.
+  - *Solución*: tokens `--c-success: #15803d`, `--c-danger: #b91c1c`, `--c-warn: #b45309`.
+- **`role="listitem"` en un `<button>`**: pisa el rol de botón para lectores de pantalla.
+  - *Solución*: no poner roles de estructura sobre controles; usar `<ul>/<li>` envolviendo el botón.
+- **Tarjeta con `tabindex` que contiene un botón**: dos paradas de `Tab` por tarjeta.
+  - *Solución*: un único control enfocable por tarjeta (el botón "Ver perfil").
+- **Preflight de Tailwind CDN pisa el fondo de `button[type=submit]`**: el selector `[type='submit']` tiene la misma especificidad que `.btn-primary` y se inyecta después.
+  - *Solución*: selectores `.btn.btn-primary` (mayor especificidad).
+- **`history.pushState` también dentro de `popstate`**: rompía el botón "atrás".
+  - *Solución*: `navigate(id, { push: false })` al responder a `popstate`.
+- **Texto heredado en íconos del footer**: "f" y "▶" heredaban `text-slate-900` sobre navy (1.3:1).
+  - *Solución*: `text-white` explícito en los enlaces sociales.

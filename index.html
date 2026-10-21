@@ -7,10 +7,19 @@
   <meta name="description" content="Encontrá trabajadores independientes verificados cerca tuyo. Plomería, electricidad, gas, pintura y más servicios del hogar." />
   <meta name="theme-color" content="#1D4ED8" />
 
+  <!-- Tema inicial antes del primer pintado (evita parpadeo). La lógica completa vive en app.js -->
+  <script>
+    try {
+      var t = localStorage.getItem('mc_theme');
+      if (t === 'dark' || (!t && matchMedia('(prefers-color-scheme: dark)').matches)) document.documentElement.classList.add('dark');
+    } catch (e) {}
+  </script>
+
   <!-- Tailwind CSS v3 CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
+      darkMode: 'class',
       theme: {
         extend: {
           colors: {
@@ -34,6 +43,8 @@
 
 <body class="font-sans bg-slate-50 text-slate-900 antialiased">
 
+<a href="#app" class="skip-link">Saltar al contenido principal</a>
+
 <!-- ═══════════════════════════════════════════════════════════════
      DESKTOP NAVBAR — oculto en mobile (CSS)
 ═══════════════════════════════════════════════════════════════ -->
@@ -53,10 +64,11 @@
     </a>
 
     <!-- Desktop links -->
-    <ul class="hidden md:flex items-center gap-8" role="list">
-      <li><a href="#" class="nav-link active" data-view="home" id="nl-home">Inicio</a></li>
-      <li><a href="#" class="nav-link" data-view="search" id="nl-servicios">Servicios</a></li>
-      <li><a href="#" class="nav-link" id="nl-como">Cómo funciona</a></li>
+    <ul class="hidden md:flex items-center gap-8">
+      <li><a href="#home" class="nav-link active" data-view="home" id="nl-home">Inicio</a></li>
+      <li><a href="#search" class="nav-link" data-view="search" id="nl-servicios">Prestadores</a></li>
+      <li><a href="#como-funciona" class="nav-link" data-scroll="como-funciona" id="nl-como">Cómo funciona</a></li>
+      <li><a href="#publicar" class="nav-link" data-scroll="publicar" id="nl-publicar">Publicar solicitud</a></li>
     </ul>
 
     <!-- Right side controls -->
@@ -65,7 +77,7 @@
       <button class="hidden md:flex items-center gap-1.5 text-sm font-medium text-slate-600 hover:text-brand
                      bg-slate-50 hover:bg-blue-50 border border-slate-200 px-3 py-2 rounded-lg transition-all
                      focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-1 min-h-[44px]"
-              aria-label="Cambiar ubicación" id="location-btn">
+              aria-label="Cambiar ubicación" id="location-btn" data-action="location">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/>
         </svg>
@@ -76,9 +88,12 @@
       <!-- Theme toggle -->
       <button id="theme-btn"
               class="btn-icon focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-1"
-              aria-label="Cambiar tema" title="Modo oscuro / claro">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              aria-label="Activar modo oscuro" aria-pressed="false" title="Modo oscuro / claro">
+        <svg class="theme-icon-moon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+        </svg>
+        <svg class="theme-icon-sun" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
         </svg>
       </button>
 
@@ -90,15 +105,32 @@
           <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
         </svg>
       </button>
+
+      <!-- Hamburguesa (solo mobile) -->
+      <button id="menu-btn" class="btn-icon md:hidden" aria-label="Abrir menú" aria-expanded="false" aria-controls="mobile-menu">
+        <svg class="menu-icon-open" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+        <svg class="menu-icon-close" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/></svg>
+      </button>
     </div>
   </nav>
+
+  <!-- Menú desplegable mobile -->
+  <div id="mobile-menu" class="mobile-menu md:hidden" hidden>
+    <ul class="flex flex-col p-3 gap-1">
+      <li><a href="#home" class="mobile-menu-link" data-view="home">Inicio</a></li>
+      <li><a href="#search" class="mobile-menu-link" data-view="search">Prestadores</a></li>
+      <li><a href="#como-funciona" class="mobile-menu-link" data-scroll="como-funciona">Cómo funciona</a></li>
+      <li><a href="#publicar" class="mobile-menu-link" data-scroll="publicar">Publicar solicitud</a></li>
+      <li><a href="#solicitudes" class="mobile-menu-link" data-view="solicitudes">Mis solicitudes</a></li>
+    </ul>
+  </div>
 </header>
 
 
 <!-- ═══════════════════════════════════════════════════════════════
      SPA — VISTAS
 ═══════════════════════════════════════════════════════════════ -->
-<main id="app">
+<main id="app" tabindex="-1">
 
   <!-- ─────────────────────────────────────────────
        VISTA 1: HOME
@@ -106,7 +138,7 @@
   <section id="view-home" class="view active" aria-label="Pantalla principal">
 
     <!-- HERO -->
-    <div class="hero-bg relative text-white">
+    <div class="hero-bg on-dark relative text-white">
       <div class="hero-worker" aria-hidden="true">
         <!-- Decorative geometric silhouette -->
         <svg viewBox="0 0 400 500" class="w-full h-full opacity-20" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
@@ -130,9 +162,18 @@
           </h1>
 
           <!-- Subtitle -->
-          <p class="text-slate-300 text-lg leading-relaxed mb-10 max-w-md">
+          <p class="text-slate-300 text-lg leading-relaxed mb-8 max-w-md">
             Solucioná lo que necesitás en tu hogar con expertos de confianza.
           </p>
+
+          <!-- CTAs -->
+          <div class="flex flex-wrap gap-3 mb-6">
+            <a href="#publicar" data-scroll="publicar" class="btn btn-light !w-auto px-7">
+              Publicar solicitud gratis
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+            </a>
+            <a href="#servicios" data-scroll="servicios" class="btn btn-outline-light !w-auto px-7">Ver prestadores</a>
+          </div>
         </div>
       </div>
     </div>
@@ -144,23 +185,23 @@
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="flex-shrink-0">
             <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
           </svg>
-          <input id="hero-search" type="text" placeholder="¿Qué servicio necesitás?"
-                 class="flex-1 outline-none text-slate-700 placeholder-slate-400 text-base bg-transparent"
+          <input id="hero-search" type="search" placeholder="¿Qué servicio necesitás?"
+                 class="flex-1 outline-none text-slate-700 placeholder-slate-500 text-base bg-transparent"
                  aria-label="Buscar servicio" />
         </div>
         <div class="hidden md:flex items-center gap-2 px-5 border-l border-slate-200">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/>
           </svg>
-          <select class="outline-none text-slate-600 text-sm bg-transparent cursor-pointer" aria-label="Seleccionar zona">
+          <select class="text-slate-600 text-sm bg-transparent cursor-pointer" aria-label="Seleccionar zona">
             <option>Río Cuarto, Córdoba</option>
             <option>Córdoba Capital</option>
             <option>Villa María</option>
             <option>Buenos Aires</option>
           </select>
         </div>
-        <button class="btn btn-primary !rounded-none !rounded-r-2xl !w-auto px-7 py-5 text-base" 
-                aria-label="Buscar" id="hero-search-btn" data-view="search">
+        <button class="btn btn-primary force-text-white !rounded-none !rounded-r-2xl !w-auto px-7 py-5 text-base" 
+                aria-label="Buscar" id="hero-search-btn" type="button">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
           </svg>
@@ -171,42 +212,42 @@
     <!-- CATEGORIES -->
     <section class="max-w-7xl mx-auto px-4 mb-12" aria-label="Categorías de servicios">
       <div class="card p-4">
-        <div class="grid grid-cols-4 sm:grid-cols-5 md:grid-cols-9 gap-2" role="list">
+        <div class="grid grid-cols-3 sm:grid-cols-5 md:grid-cols-9 gap-2">
 
-          <button class="cat-chip" data-view="search" data-cat="Plomería" aria-label="Plomería" role="listitem">
-            <div class="cat-icon" style="background:#eff6ff">💧</div>
+          <button class="cat-chip" data-view="search" data-cat="Plomería" aria-label="Plomería">
+            <div class="cat-icon" aria-hidden="true" style="background:#eff6ff">💧</div>
             <span class="cat-label">Plomería</span>
           </button>
-          <button class="cat-chip" data-view="search" data-cat="Electricidad" aria-label="Electricidad" role="listitem">
-            <div class="cat-icon" style="background:#fffbeb">⚡</div>
+          <button class="cat-chip" data-view="search" data-cat="Electricidad" aria-label="Electricidad">
+            <div class="cat-icon" aria-hidden="true" style="background:#fffbeb">⚡</div>
             <span class="cat-label">Electricidad</span>
           </button>
-          <button class="cat-chip" data-view="search" data-cat="Gas" aria-label="Gas" role="listitem">
-            <div class="cat-icon" style="background:#fef9c3">🔥</div>
+          <button class="cat-chip" data-view="search" data-cat="Gas" aria-label="Gas">
+            <div class="cat-icon" aria-hidden="true" style="background:#fef9c3">🔥</div>
             <span class="cat-label">Gas</span>
           </button>
-          <button class="cat-chip" data-view="search" data-cat="Pintura" aria-label="Pintura" role="listitem">
-            <div class="cat-icon" style="background:#fdf4ff">🎨</div>
+          <button class="cat-chip" data-view="search" data-cat="Pintura" aria-label="Pintura">
+            <div class="cat-icon" aria-hidden="true" style="background:#fdf4ff">🎨</div>
             <span class="cat-label">Pintura</span>
           </button>
-          <button class="cat-chip" data-view="search" data-cat="Albañilería" aria-label="Albañilería" role="listitem">
-            <div class="cat-icon" style="background:#fef3c7">🧱</div>
+          <button class="cat-chip" data-view="search" data-cat="Albañilería" aria-label="Albañilería">
+            <div class="cat-icon" aria-hidden="true" style="background:#fef3c7">🧱</div>
             <span class="cat-label">Albañilería</span>
           </button>
-          <button class="cat-chip" data-view="search" data-cat="Jardinería" aria-label="Jardinería" role="listitem">
-            <div class="cat-icon" style="background:#f0fdf4">🌱</div>
+          <button class="cat-chip" data-view="search" data-cat="Jardinería" aria-label="Jardinería">
+            <div class="cat-icon" aria-hidden="true" style="background:#f0fdf4">🌱</div>
             <span class="cat-label">Jardinería</span>
           </button>
-          <button class="cat-chip" data-view="search" data-cat="Limpieza" aria-label="Limpieza" role="listitem">
-            <div class="cat-icon" style="background:#f0f9ff">🧹</div>
+          <button class="cat-chip" data-view="search" data-cat="Limpieza" aria-label="Limpieza">
+            <div class="cat-icon" aria-hidden="true" style="background:#f0f9ff">🧹</div>
             <span class="cat-label">Limpieza</span>
           </button>
-          <button class="cat-chip" data-view="search" data-cat="Electrodomésticos" aria-label="Reparación de electrodomésticos" role="listitem">
-            <div class="cat-icon" style="background:#f5f3ff">🔧</div>
+          <button class="cat-chip" data-view="search" data-cat="Electrodomésticos" aria-label="Reparación de electrodomésticos">
+            <div class="cat-icon" aria-hidden="true" style="background:#f5f3ff">🔧</div>
             <span class="cat-label">Rep. de electro&shy;domésticos</span>
           </button>
-          <button class="cat-chip" data-view="search" aria-label="Ver todas las categorías" role="listitem">
-            <div class="cat-icon" style="background:#f8fafc">⋯</div>
+          <button class="cat-chip" data-view="search" data-cat="Todos" aria-label="Ver todas las categorías">
+            <div class="cat-icon" aria-hidden="true" style="background:#f8fafc">⋯</div>
             <span class="cat-label">Ver más</span>
           </button>
 
@@ -215,47 +256,47 @@
     </section>
 
     <!-- PRESTADORES DESTACADOS -->
-    <section class="max-w-7xl mx-auto px-4 mb-12" aria-label="Prestadores destacados">
+    <section id="servicios" class="max-w-7xl mx-auto px-4 mb-12 scroll-mt-24" aria-labelledby="destacados-title">
       <div class="flex items-center justify-between mb-5">
-        <h2 class="text-2xl font-bold text-slate-900">Prestadores destacados</h2>
-        <a href="#" data-view="search" class="text-sm font-semibold text-brand hover:underline flex items-center gap-1 focus-visible:outline-2 focus-visible:outline-brand rounded">
+        <h2 id="destacados-title" class="text-2xl font-bold text-slate-900">Prestadores destacados</h2>
+        <a href="#search" data-view="search" data-cat="Todos" class="text-sm font-semibold text-brand hover:underline flex items-center gap-1 focus-visible:outline-2 focus-visible:outline-brand rounded">
           Ver todos
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
         </a>
       </div>
-      <div id="home-providers-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+      <ul id="home-providers-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4" aria-label="Catálogo de prestadores">
         <!-- Rendered by JS -->
-      </div>
+      </ul>
     </section>
 
     <!-- ¿POR QUÉ MANOCERCA? -->
-    <section class="bg-white py-14 px-4" aria-label="Ventajas de ManoCerca">
+    <section id="como-funciona" class="bg-white py-14 px-4 scroll-mt-16" aria-labelledby="como-title">
       <div class="max-w-7xl mx-auto">
         <div class="flex flex-col md:flex-row gap-10 items-start">
           <div class="flex-1">
-            <h2 class="text-2xl font-bold text-slate-900 mb-8">¿Por qué elegir ManoCerca?</h2>
+            <h2 id="como-title" class="text-2xl font-bold text-slate-900 mb-8">¿Por qué elegir ManoCerca?</h2>
             <div class="grid grid-cols-2 gap-6">
 
               <article class="flex flex-col gap-3">
-                <div class="w-12 h-12 rounded-xl flex items-center justify-center text-2xl" style="background:#eff6ff">🛡️</div>
+                <div class="w-12 h-12 rounded-xl flex items-center justify-center text-2xl" aria-hidden="true" style="background:#eff6ff">🛡️</div>
                 <h3 class="font-bold text-slate-900">Seguridad</h3>
                 <p class="text-slate-500 text-sm leading-relaxed">Perfiles verificados y calificaciones reales.</p>
               </article>
 
               <article class="flex flex-col gap-3">
-                <div class="w-12 h-12 rounded-xl flex items-center justify-center text-2xl" style="background:#fffbeb">⭐</div>
+                <div class="w-12 h-12 rounded-xl flex items-center justify-center text-2xl" aria-hidden="true" style="background:#fffbeb">⭐</div>
                 <h3 class="font-bold text-slate-900">Confianza</h3>
                 <p class="text-slate-500 text-sm leading-relaxed">Leé reseñas de otros clientes y conocé la experiencia de cada prestador.</p>
               </article>
 
               <article class="flex flex-col gap-3">
-                <div class="w-12 h-12 rounded-xl flex items-center justify-center text-2xl" style="background:#f0fdf4">📍</div>
+                <div class="w-12 h-12 rounded-xl flex items-center justify-center text-2xl" aria-hidden="true" style="background:#f0fdf4">📍</div>
                 <h3 class="font-bold text-slate-900">Cercanía</h3>
                 <p class="text-slate-500 text-sm leading-relaxed">Encontrá profesionales en tu zona.</p>
               </article>
 
               <article class="flex flex-col gap-3">
-                <div class="w-12 h-12 rounded-xl flex items-center justify-center text-2xl" style="background:#fdf4ff">⚡</div>
+                <div class="w-12 h-12 rounded-xl flex items-center justify-center text-2xl" aria-hidden="true" style="background:#fdf4ff">⚡</div>
                 <h3 class="font-bold text-slate-900">Rapidez</h3>
                 <p class="text-slate-500 text-sm leading-relaxed">Publicá tu solicitud y recibí propuestas en minutos.</p>
               </article>
@@ -264,9 +305,9 @@
           </div>
 
           <!-- Decorative right card -->
-          <div class="hidden md:flex flex-col items-center justify-center w-64 flex-shrink-0">
+          <div class="hidden md:flex flex-col items-center justify-center w-64 flex-shrink-0" aria-hidden="true">
             <div class="bg-gradient-to-br from-blue-50 to-blue-100 rounded-3xl p-8 text-center shadow-inner">
-              <p class="text-slate-400 italic text-sm mb-3 font-medium">"Tu problema,<br>nuestra prioridad"</p>
+              <p class="text-slate-600 italic text-sm mb-3 font-medium">"Tu problema,<br>nuestra prioridad"</p>
               <div class="text-6xl">🏠</div>
               <div class="mt-4 flex gap-1 justify-center">
                 <span class="w-2 h-2 rounded-full bg-brand"></span>
@@ -279,24 +320,94 @@
       </div>
     </section>
 
+    <!-- PUBLICAR SOLICITUD — Formulario validado en cliente -->
+    <section id="publicar" class="py-14 px-4 scroll-mt-16" aria-labelledby="publicar-title">
+      <div class="max-w-2xl mx-auto">
+        <h2 id="publicar-title" class="text-2xl font-bold text-slate-900 mb-2">Publicá tu solicitud</h2>
+        <p class="text-slate-600 mb-6">Contanos qué necesitás y recibí propuestas de prestadores verificados de tu zona.</p>
+
+        <form id="request-form" class="card p-5 md:p-7 flex flex-col gap-5" novalidate>
+
+          <div class="field">
+            <label for="f-titulo" class="field-label">Título del problema <span class="req" aria-hidden="true">*</span></label>
+            <input id="f-titulo" name="titulo" type="text" class="input" required minlength="8" maxlength="80"
+                   placeholder="Ej: Pérdida de agua en la cocina" autocomplete="off"
+                   aria-describedby="f-titulo-error" />
+            <p id="f-titulo-error" class="field-error" aria-live="polite"></p>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+            <div class="field">
+              <label for="f-categoria" class="field-label">Servicio <span class="req" aria-hidden="true">*</span></label>
+              <select id="f-categoria" name="categoria" class="input" required aria-describedby="f-categoria-error">
+                <option value="">Elegí una categoría</option>
+                <option>Plomería</option>
+                <option>Electricidad</option>
+                <option>Gas</option>
+                <option>Pintura</option>
+                <option>Albañilería</option>
+                <option>Jardinería</option>
+                <option>Limpieza</option>
+                <option>Electrodomésticos</option>
+              </select>
+              <p id="f-categoria-error" class="field-error" aria-live="polite"></p>
+            </div>
+
+            <div class="field">
+              <label for="f-telefono" class="field-label">Teléfono de contacto <span class="req" aria-hidden="true">*</span></label>
+              <input id="f-telefono" name="telefono" type="tel" class="input" required inputmode="tel"
+                     placeholder="Ej: 358 412-3456" autocomplete="tel"
+                     aria-describedby="f-telefono-hint f-telefono-error" />
+              <p id="f-telefono-hint" class="field-hint">Solo lo ve el prestador que elijas.</p>
+              <p id="f-telefono-error" class="field-error" aria-live="polite"></p>
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="f-descripcion" class="field-label">Descripción <span class="req" aria-hidden="true">*</span></label>
+            <textarea id="f-descripcion" name="descripcion" class="input resize-y" rows="4" required minlength="20" maxlength="400"
+                      placeholder="Contá qué pasó, desde cuándo y en qué ambiente."
+                      aria-describedby="f-descripcion-count f-descripcion-error"></textarea>
+            <div class="flex justify-between gap-3">
+              <p id="f-descripcion-error" class="field-error" aria-live="polite"></p>
+              <p id="f-descripcion-count" class="field-hint ml-auto whitespace-nowrap">0 / 400</p>
+            </div>
+          </div>
+
+          <label class="flex items-center gap-3 cursor-pointer">
+            <input id="f-urgente" name="urgente" type="checkbox" class="w-5 h-5 rounded accent-brand cursor-pointer" />
+            <span class="text-sm text-slate-700">Es urgente (necesito que vengan hoy)</span>
+          </label>
+
+          <p class="text-xs text-slate-500"><span aria-hidden="true">*</span> Campos obligatorios</p>
+
+          <div class="flex flex-col-reverse sm:flex-row gap-3 sm:justify-end">
+            <button type="reset" class="btn btn-secondary sm:!w-auto">Limpiar</button>
+            <button type="submit" class="btn btn-primary force-text-white sm:!w-auto px-8">Publicar solicitud</button>
+          </div>
+        </form>
+      </div>
+    </section>
+
+
     <!-- CTA BANNER — CUPÓN -->
-    <section class="bg-navy py-8 px-4" aria-label="Oferta de cupón de descuento">
+    <section class="bg-navy on-dark py-8 px-4" aria-label="Oferta de cupón de descuento">
       <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
         <div class="flex items-center gap-5 text-white">
-          <div class="w-14 h-14 bg-brand/30 rounded-2xl flex items-center justify-center text-3xl flex-shrink-0">🎁</div>
+          <div aria-hidden="true" class="w-14 h-14 bg-brand/30 rounded-2xl flex items-center justify-center text-3xl flex-shrink-0">🎁</div>
           <div>
             <p class="font-bold text-lg">¿Hace tiempo que no usás ManoCerca?</p>
-            <p class="text-slate-400 text-sm mt-0.5">Te regalamos un cupón de descuento para tu próximo servicio.</p>
+            <p class="text-slate-300 text-sm mt-0.5">Te regalamos un cupón de descuento para tu próximo servicio.</p>
           </div>
         </div>
-        <button class="btn btn-primary !w-auto px-7 whitespace-nowrap flex-shrink-0 !rounded-xl" aria-label="Ver mi cupón de descuento">
+        <button type="button" data-action="coupon" class="btn btn-primary force-text-white !w-auto px-7 whitespace-nowrap flex-shrink-0 !rounded-xl" aria-label="Ver mi cupón de descuento">
           Ver mi cupón →
         </button>
       </div>
     </section>
 
     <!-- FOOTER -->
-    <footer class="bg-navy pt-12 pb-6 px-4" role="contentinfo">
+    <footer class="bg-navy on-dark pt-12 pb-6 px-4">
       <div class="max-w-7xl mx-auto">
         <div class="grid grid-cols-1 md:grid-cols-4 gap-10 mb-10">
 
@@ -308,24 +419,24 @@
               </div>
               <span class="font-bold text-lg text-white">ManoCerca</span>
             </div>
-            <p class="text-slate-500 text-sm leading-relaxed">Servicios locales, más cerca tuyo.</p>
+            <p class="text-slate-400 text-sm leading-relaxed">Servicios locales, más cerca tuyo.</p>
           </div>
 
           <!-- Categorías -->
           <div>
             <p class="footer-col-title">Categorías</p>
-            <a href="#" class="footer-link">Plomería</a>
-            <a href="#" class="footer-link">Electricidad</a>
-            <a href="#" class="footer-link">Gas</a>
-            <a href="#" class="footer-link">Pintura</a>
-            <a href="#" class="footer-link">Albañilería</a>
-            <a href="#" class="footer-link">Ver más</a>
+            <a href="#search" class="footer-link" data-view="search" data-cat="Plomería">Plomería</a>
+            <a href="#search" class="footer-link" data-view="search" data-cat="Electricidad">Electricidad</a>
+            <a href="#search" class="footer-link" data-view="search" data-cat="Gas">Gas</a>
+            <a href="#search" class="footer-link" data-view="search" data-cat="Pintura">Pintura</a>
+            <a href="#search" class="footer-link" data-view="search" data-cat="Albañilería">Albañilería</a>
+            <a href="#search" class="footer-link" data-view="search" data-cat="Todos">Ver más</a>
           </div>
 
           <!-- Links útiles -->
           <div>
             <p class="footer-col-title">Links útiles</p>
-            <a href="#" class="footer-link">Cómo funciona</a>
+            <a href="#como-funciona" class="footer-link" data-scroll="como-funciona">Cómo funciona</a>
             <a href="#" class="footer-link">Términos y condiciones</a>
             <a href="#" class="footer-link">Política de privacidad</a>
             <a href="#" class="footer-link">Centro de ayuda</a>
@@ -335,24 +446,24 @@
           <div>
             <p class="footer-col-title">Seguinos</p>
             <div class="flex gap-3">
-              <a href="#" class="w-10 h-10 bg-white/10 hover:bg-brand rounded-lg flex items-center justify-center transition-colors focus-visible:outline-2 focus-visible:outline-white" aria-label="Instagram">
-                <span class="text-lg">📷</span>
+              <a href="#" class="w-11 h-11 bg-white/10 hover:bg-brand active:scale-95 text-white rounded-lg flex items-center justify-center transition" aria-label="Instagram">
+                <span class="text-lg" aria-hidden="true">📷</span>
               </a>
-              <a href="#" class="w-10 h-10 bg-white/10 hover:bg-brand rounded-lg flex items-center justify-center transition-colors focus-visible:outline-2 focus-visible:outline-white" aria-label="Facebook">
+              <a href="#" class="w-11 h-11 bg-white/10 hover:bg-brand active:scale-95 text-white rounded-lg flex items-center justify-center transition" aria-label="Facebook">
                 <span class="text-lg">f</span>
               </a>
-              <a href="#" class="w-10 h-10 bg-white/10 hover:bg-brand rounded-lg flex items-center justify-center transition-colors focus-visible:outline-2 focus-visible:outline-white" aria-label="X / Twitter">
+              <a href="#" class="w-11 h-11 bg-white/10 hover:bg-brand active:scale-95 text-white rounded-lg flex items-center justify-center transition" aria-label="X / Twitter">
                 <span class="text-base font-bold text-white">𝕏</span>
               </a>
-              <a href="#" class="w-10 h-10 bg-white/10 hover:bg-brand rounded-lg flex items-center justify-center transition-colors focus-visible:outline-2 focus-visible:outline-white" aria-label="YouTube">
+              <a href="#" class="w-11 h-11 bg-white/10 hover:bg-brand active:scale-95 text-white rounded-lg flex items-center justify-center transition" aria-label="YouTube">
                 <span class="text-lg">▶</span>
               </a>
             </div>
           </div>
         </div>
 
-        <div class="border-t border-white/10 pt-6 flex flex-col md:flex-row items-center justify-between gap-2 text-xs text-slate-600">
-          <span>© 2025 ManoCerca. Todos los derechos reservados.</span>
+        <div class="border-t border-white/10 pt-6 flex flex-col md:flex-row items-center justify-between gap-2 text-xs text-slate-400">
+          <span>© 2026 ManoCerca. Todos los derechos reservados.</span>
           <span class="flex items-center gap-1">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
             Río Cuarto, Córdoba
@@ -375,7 +486,7 @@
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="15 18 9 12 15 6"/></svg>
       </button>
       <span class="font-bold text-base flex-1">Buscar servicios</span>
-      <button class="btn-icon" aria-label="Filtros">
+      <button class="btn-icon" aria-label="Ir a los filtros" data-action="focus-filters">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="6" x2="20" y2="6"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="11" y1="18" x2="13" y2="18"/></svg>
       </button>
     </div>
@@ -387,7 +498,7 @@
         <div class="flex-1 flex items-center gap-3 px-4 py-3">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="flex-shrink-0"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
           <input id="search-input" type="search" placeholder="Buscar un servicio..."
-                 class="flex-1 outline-none text-slate-700 placeholder-slate-400 text-sm bg-transparent"
+                 class="flex-1 outline-none text-slate-700 placeholder-slate-500 text-sm bg-transparent"
                  aria-label="Buscar servicio" />
         </div>
       </div>
@@ -405,12 +516,12 @@
       </div>
 
       <!-- Results count -->
-      <p id="search-results-count" class="text-sm font-semibold text-slate-500 mb-4">4 resultados</p>
+      <p id="search-results-count" class="text-sm font-semibold text-slate-500 mb-4" aria-live="polite">6 resultados</p>
 
       <!-- Provider list -->
-      <div id="search-list" class="flex flex-col gap-3" role="list" aria-label="Listado de prestadores">
+      <ul id="search-list" class="flex flex-col gap-3" aria-label="Listado de prestadores">
         <!-- Rendered by JS -->
-      </div>
+      </ul>
 
     </div>
   </section><!-- /view-search -->
@@ -427,7 +538,7 @@
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="15 18 9 12 15 6"/></svg>
       </button>
       <span class="font-bold text-base flex-1">Perfil del prestador</span>
-      <button class="btn-icon" aria-label="Compartir perfil">
+      <button class="btn-icon" aria-label="Compartir perfil" data-action="share">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
       </button>
     </div>
@@ -442,35 +553,35 @@
     <div class="max-w-xl mx-auto px-4">
       <!-- Avatar (overlapping cover) -->
       <div class="flex justify-center -mt-10 mb-3">
-        <div class="avatar avatar-xl av-blue avatar-verified avatar-border" aria-label="Juan Pérez — Identidad verificada">JP</div>
+        <img id="profile-avatar" class="avatar-img avatar-xl avatar-border" src="" alt="Foto de perfil de Juan Pérez" width="88" height="88" />
       </div>
 
       <!-- Name & Info -->
       <div class="text-center mb-5">
-        <h1 class="text-xl font-bold text-slate-900">Juan Pérez</h1>
-        <p class="text-brand font-semibold text-sm mt-0.5">Plomero</p>
+        <h1 id="profile-name" class="text-xl font-bold text-slate-900">Juan Pérez</h1>
+        <p id="profile-profession" class="text-brand font-semibold text-sm mt-0.5">Plomero</p>
         <div class="flex items-center justify-center gap-3 mt-2 text-sm text-slate-500 flex-wrap">
           <span class="flex items-center gap-1">
-            <span class="text-amber-400">⭐</span>
-            <strong class="text-slate-700">4.8</strong> (42 reseñas)
+            <span class="text-amber-400" aria-hidden="true">⭐</span>
+            <strong id="profile-rating" class="text-slate-700">4.8</strong> (<span id="profile-reviews">42</span> reseñas)
           </span>
-          <span>·</span>
-          <span>37 trabajos realizados</span>
+          <span aria-hidden="true">·</span>
+          <span><span id="profile-jobs">37</span> trabajos realizados</span>
         </div>
-        <div class="flex items-center justify-center gap-1.5 mt-1 text-sm text-slate-400">
+        <div class="flex items-center justify-center gap-1.5 mt-1 text-sm text-slate-500">
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-          2.4 km · Río Cuarto, Córdoba
+          <span id="profile-distance">2.4 km</span> · Río Cuarto, Córdoba
         </div>
         <div class="flex items-center justify-center gap-2 mt-3">
           <span class="badge badge-blue">✓ Identidad verificada</span>
-          <span class="badge badge-green"><span class="pulse-dot mr-1"></span>Disponible hoy</span>
+          <span id="profile-available" class="badge badge-green"><span class="pulse-dot mr-1" aria-hidden="true"></span>Disponible hoy</span>
         </div>
       </div>
 
       <!-- Sobre mí -->
       <div class="card p-5 mb-4">
         <h2 class="font-bold text-slate-900 mb-2">Sobre mí</h2>
-        <p class="text-slate-500 text-sm leading-relaxed">
+        <p id="profile-bio" class="text-slate-500 text-sm leading-relaxed">
           Técnico en plomería con más de 8 años de experiencia. Realizo instalaciones, reparaciones y mantenimiento en hogares y comercios. Trabajo con responsabilidad y compromiso.
         </p>
       </div>
@@ -478,7 +589,7 @@
       <!-- Servicios que ofrece -->
       <div class="card p-5 mb-6">
         <h2 class="font-bold text-slate-900 mb-3">Servicios</h2>
-        <ul class="flex flex-col gap-2" role="list">
+        <ul id="profile-services" class="flex flex-col gap-2">
           <li class="flex items-center gap-3 py-2.5 border-b border-slate-100 last:border-0">
             <div class="w-8 h-8 rounded-lg bg-blue-50 flex items-center justify-center text-base">💧</div>
             <span class="text-sm text-slate-700 font-medium">Reparación de cañerías</span>
@@ -496,7 +607,8 @@
 
       <!-- CTA -->
       <div class="pb-6">
-        <button class="btn btn-primary" data-view="contratar" aria-label="Contactar a Juan Pérez">Contactar</button>
+        <button id="profile-contact" class="btn btn-primary force-text-white" data-view="contratar" aria-label="Contratar a Juan Pérez">Contratar</button>
+        <button class="btn btn-secondary w-full mt-3" data-view="chat">Enviar mensaje</button>
       </div>
     </div>
 
@@ -513,7 +625,7 @@
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="15 18 9 12 15 6"/></svg>
       </button>
       <span class="font-bold text-base flex-1">Detalle de solicitud</span>
-      <button class="btn-icon" aria-label="Compartir solicitud">
+      <button class="btn-icon" aria-label="Compartir solicitud" data-action="share">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
       </button>
     </div>
@@ -526,7 +638,7 @@
           <span class="text-2xl">💧</span>
           <h1 class="font-bold text-lg text-slate-900">Pérdida de agua en la cocina</h1>
         </div>
-        <span class="badge badge-red"><span class="pulse-dot mr-1"></span>Urgente</span>
+        <span class="badge badge-red"><span class="pulse-dot mr-1" aria-hidden="true"></span>Urgente</span>
       </div>
 
       <!-- Description -->
@@ -554,11 +666,11 @@
       <div class="mb-5">
         <p class="font-semibold text-sm text-slate-700 mb-3">Fotos (2)</p>
         <div class="flex gap-3">
-          <div class="photo-thumb" aria-label="Foto 1 de la pérdida">💦</div>
-          <div class="photo-thumb" aria-label="Foto 2 de la pérdida">🔩</div>
-          <div class="photo-thumb border-2 border-dashed border-slate-200 bg-white cursor-pointer hover:bg-slate-50 transition-colors" aria-label="Agregar foto">
-            <span class="text-slate-400 text-2xl">+</span>
-          </div>
+          <div class="photo-thumb" role="img" aria-label="Foto 1 de la pérdida">💦</div>
+          <div class="photo-thumb" role="img" aria-label="Foto 2 de la pérdida">🔩</div>
+          <button type="button" data-action="soon" class="photo-thumb photo-add" aria-label="Agregar foto">
+            <span class="text-slate-500 text-2xl" aria-hidden="true">+</span>
+          </button>
         </div>
       </div>
 
@@ -572,10 +684,10 @@
 
           <!-- Propuesta 1 -->
           <div class="card p-4 flex items-center gap-3">
-            <div class="avatar avatar-sm av-blue avatar-verified">JP</div>
+            <div aria-hidden="true" class="avatar avatar-sm av-blue avatar-verified">JP</div>
             <div class="flex-1">
               <p class="font-semibold text-sm text-slate-900">Juan Pérez</p>
-              <div class="flex items-center gap-1 text-xs text-slate-400">
+              <div class="flex items-center gap-1 text-xs text-slate-500">
                 <span class="text-amber-400">★</span> 4.8
                 <span class="mx-1">·</span>
                 Hoy, 19:00
@@ -583,7 +695,7 @@
             </div>
             <div class="text-right">
               <p class="font-bold text-slate-900 text-sm">$25.000</p>
-              <button class="btn btn-primary !py-1.5 !px-4 !text-xs !w-auto mt-1" data-view="contratar" aria-label="Ver propuesta de Juan Pérez">
+              <button class="btn btn-primary force-text-white !py-1.5 !px-4 !text-xs !w-auto mt-1" data-view="contratar" aria-label="Ver propuesta de Juan Pérez">
                 Ver propuesta
               </button>
             </div>
@@ -591,10 +703,10 @@
 
           <!-- Propuesta 2 -->
           <div class="card p-4 flex items-center gap-3">
-            <div class="avatar avatar-sm av-violet avatar-verified">ML</div>
+            <div aria-hidden="true" class="avatar avatar-sm av-violet avatar-verified">ML</div>
             <div class="flex-1">
               <p class="font-semibold text-sm text-slate-900">Martín López</p>
-              <div class="flex items-center gap-1 text-xs text-slate-400">
+              <div class="flex items-center gap-1 text-xs text-slate-500">
                 <span class="text-amber-400">★</span> 4.6
                 <span class="mx-1">·</span>
                 Hoy, 18:30
@@ -617,7 +729,7 @@
   <!-- ─────────────────────────────────────────────
        VISTA 5: CHAT
   ───────────────────────────────────────────── -->
-  <section id="view-chat" class="view" aria-label="Chat con el prestador" style="display:none">
+  <section id="view-chat" class="view" aria-label="Chat con el prestador">
 
     <!-- Chat Header -->
     <div class="mobile-header border-b border-slate-200">
@@ -625,21 +737,21 @@
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="15 18 9 12 15 6"/></svg>
       </button>
       <div class="flex items-center gap-3 flex-1">
-        <div class="avatar avatar-sm av-blue avatar-verified">JP</div>
+        <div aria-hidden="true" class="avatar avatar-sm av-blue avatar-verified">JP</div>
         <div>
           <p class="font-bold text-sm text-slate-900">Juan Pérez</p>
-          <p class="text-xs text-green-500 font-medium flex items-center gap-1">
-            <span class="w-1.5 h-1.5 rounded-full bg-green-500 inline-block"></span>En línea
+          <p class="text-xs text-green-700 font-medium flex items-center gap-1">
+            <span class="w-1.5 h-1.5 rounded-full bg-green-500 inline-block" aria-hidden="true"></span>En línea
           </p>
         </div>
       </div>
-      <button class="btn-icon" aria-label="Más opciones">
+      <button class="btn-icon" aria-label="Más opciones" data-action="soon">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/></svg>
       </button>
     </div>
 
     <!-- Messages area -->
-    <div id="chat-messages" class="flex flex-col gap-3 px-4 py-5 overflow-y-auto" style="height: calc(100dvh - 140px);" role="log" aria-live="polite" aria-label="Mensajes del chat">
+    <div id="chat-messages" class="chat-area flex flex-col gap-3 px-4 py-5 overflow-y-auto" role="log" aria-live="polite" aria-label="Mensajes del chat">
 
       <!-- Received -->
       <div class="flex flex-col">
@@ -682,14 +794,14 @@
     </div>
 
     <!-- Input Bar -->
-    <div class="fixed bottom-[72px] md:bottom-0 left-0 right-0 bg-white border-t border-slate-200 px-4 py-3 flex items-center gap-3">
-      <button class="btn-icon" aria-label="Adjuntar archivo">
+    <div class="chat-input-bar fixed bottom-[72px] md:bottom-0 left-0 right-0 bg-white border-t border-slate-200 px-4 py-3 flex items-center gap-3">
+      <button class="btn-icon" aria-label="Adjuntar archivo" data-action="soon">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg>
       </button>
       <input id="chat-input" type="text" placeholder="Escribí un mensaje..."
-             class="input !py-2 !px-3 !border !border-slate-200 text-sm"
+             class="input !py-2 !px-3 text-sm" autocomplete="off"
              aria-label="Escribir mensaje en el chat" />
-      <button id="chat-send-btn" class="btn btn-primary !w-auto !py-2 !px-4 !rounded-full" aria-label="Enviar mensaje">
+      <button id="chat-send-btn" class="btn btn-primary force-text-white !w-auto !py-2 !px-4 !rounded-full" aria-label="Enviar mensaje" disabled>
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
       </button>
     </div>
@@ -713,12 +825,12 @@
 
       <!-- Provider summary -->
       <div class="card p-4 flex items-center gap-4 mb-5">
-        <div class="avatar avatar-md av-blue avatar-verified">JP</div>
+        <img id="hire-avatar" class="avatar-img avatar-md" src="" alt="Foto de perfil de Juan Pérez" width="56" height="56" />
         <div>
-          <p class="font-bold text-slate-900">Juan Pérez</p>
-          <p class="text-sm text-slate-500">Plomero</p>
-          <div class="flex items-center gap-1 text-xs text-slate-400 mt-0.5">
-            <span class="text-amber-400">★</span> 4.8 (42 reseñas)
+          <p id="hire-name" class="font-bold text-slate-900">Juan Pérez</p>
+          <p id="hire-profession" class="text-sm text-slate-500">Plomero</p>
+          <div class="flex items-center gap-1 text-xs text-slate-500 mt-0.5">
+            <span class="text-amber-400" aria-hidden="true">★</span> <span id="hire-rating">4.8 (42 reseñas)</span>
           </div>
         </div>
       </div>
@@ -729,11 +841,11 @@
         <div class="flex flex-col gap-3">
           <div class="flex justify-between text-sm">
             <span class="text-slate-500">Servicio</span>
-            <span class="font-medium text-slate-800">Reparación de cañería</span>
+            <span id="hire-service" class="font-medium text-slate-800">Reparación de cañería</span>
           </div>
           <div class="flex justify-between text-sm">
             <span class="text-slate-500">Precio</span>
-            <span class="font-bold text-slate-900 text-base">$25.000</span>
+            <span id="hire-price" class="font-bold text-slate-900 text-base">$25.000</span>
           </div>
           <div class="flex justify-between text-sm">
             <span class="text-slate-500">Fecha y horario</span>
@@ -751,15 +863,15 @@
         <input type="checkbox" id="terms-check" class="mt-1 w-5 h-5 rounded accent-brand cursor-pointer flex-shrink-0"
                aria-describedby="terms-desc" />
         <span id="terms-desc" class="text-sm text-slate-500 leading-relaxed">
-          Acepto los <a href="#" class="text-brand font-medium hover:underline focus-visible:outline-2 focus-visible:outline-brand rounded">términos y condiciones</a> de la plataforma.
+          Acepto los <a href="#" data-action="soon" class="text-brand font-medium hover:underline rounded">términos y condiciones</a> de la plataforma.
         </span>
       </label>
 
       <!-- Confirm CTA -->
-      <button id="confirm-hire-btn" class="btn btn-primary" disabled aria-label="Confirmar y contratar a Juan Pérez"
-              aria-describedby="terms-desc">
+      <button id="confirm-hire-btn" class="btn btn-primary force-text-white" disabled aria-describedby="hire-hint">
         Confirmar y contratar
       </button>
+      <p id="hire-hint" class="text-xs text-slate-500 text-center mt-2">Aceptá los términos para habilitar la contratación.</p>
 
     </div>
   </section><!-- /view-contratar -->
@@ -813,11 +925,11 @@
 
       <!-- Provider status -->
       <div class="card p-4 flex items-center gap-4 mb-5">
-        <div class="avatar avatar-md av-blue">JP</div>
+        <div aria-hidden="true" class="avatar avatar-md av-blue">JP</div>
         <div class="flex-1">
-          <p class="font-bold text-slate-900 text-sm">Juan Pérez está en camino</p>
-          <p class="text-xs text-slate-400 mt-0.5">🕐 Llegada estimada: 18:45</p>
-          <p class="text-xs text-slate-400">📍 2.3 km</p>
+          <p id="track-title" class="font-bold text-slate-900 text-sm">Juan Pérez está en camino</p>
+          <p class="text-xs text-slate-500 mt-0.5">🕐 Llegada estimada: 18:45</p>
+          <p class="text-xs text-slate-500">📍 2.3 km</p>
         </div>
       </div>
 
@@ -828,7 +940,7 @@
           <span class="text-slate-500">Reparación de cañería</span>
           <span class="font-bold text-slate-900">$25.000</span>
         </div>
-        <div class="flex items-center gap-1.5 text-xs text-slate-400">
+        <div class="flex items-center gap-1.5 text-xs text-slate-500">
           <span>🕐 Hoy, 19:00</span>
           <span>·</span>
           <span>📍 Zona centro</span>
@@ -865,15 +977,15 @@
       </div>
 
       <h1 class="text-2xl font-extrabold text-slate-900 mb-2">¡Trabajo finalizado!</h1>
-      <p class="text-slate-400 text-sm mb-7">El servicio se completó correctamente.<br>Ahora podés calificar al prestador.</p>
+      <p class="text-slate-500 text-sm mb-7">El servicio se completó correctamente.<br>Ahora podés calificar al prestador.</p>
 
       <!-- Provider summary -->
       <div class="flex items-center justify-center gap-4 mb-8">
-        <div class="avatar avatar-lg av-blue avatar-verified">JP</div>
+        <div aria-hidden="true" class="avatar avatar-lg av-blue avatar-verified">JP</div>
         <div class="text-left">
           <p class="font-bold text-slate-900">Juan Pérez</p>
           <p class="text-sm text-slate-500">Plomero</p>
-          <div class="flex items-center gap-1 text-xs text-slate-400">
+          <div class="flex items-center gap-1 text-xs text-slate-500">
             <span class="text-amber-400">★</span> 4.8 (42 reseñas)
           </div>
         </div>
@@ -897,9 +1009,10 @@
                 aria-label="Escribir reseña opcional"></textarea>
 
       <!-- Submit -->
-      <button id="submit-review-btn" class="btn btn-primary" aria-label="Enviar calificación">
+      <button id="submit-review-btn" class="btn btn-primary force-text-white" disabled aria-describedby="review-hint">
         Enviar calificación
       </button>
+      <p id="review-hint" class="text-xs text-slate-500 mt-2" aria-live="polite">Elegí de 1 a 5 estrellas para poder enviar.</p>
     </div>
 
   </section><!-- /view-calificar -->
@@ -921,16 +1034,16 @@
 
       <!-- Tabs -->
       <div class="flex gap-2 mb-4" role="tablist" aria-label="Filtrar solicitudes">
-        <button class="filter-chip active" data-tab="activas" role="tab" aria-selected="true" aria-controls="solicitudes-list">Activas</button>
-        <button class="filter-chip" data-tab="finalizadas" role="tab" aria-selected="false" aria-controls="solicitudes-list">Finalizadas</button>
-        <button class="filter-chip" data-tab="canceladas" role="tab" aria-selected="false" aria-controls="solicitudes-list">Canceladas</button>
+        <button class="filter-chip active" data-tab="activas" role="tab" aria-selected="true" tabindex="0" aria-controls="solicitudes-list">Activas</button>
+        <button class="filter-chip" data-tab="finalizadas" role="tab" aria-selected="false" tabindex="-1" aria-controls="solicitudes-list">Finalizadas</button>
+        <button class="filter-chip" data-tab="canceladas" role="tab" aria-selected="false" tabindex="-1" aria-controls="solicitudes-list">Canceladas</button>
       </div>
 
       <!-- List -->
-      <div id="solicitudes-list" class="flex flex-col gap-3" role="list">
+      <div id="solicitudes-list" class="flex flex-col gap-3" role="tabpanel" aria-label="Solicitudes">
 
         <!-- En curso -->
-        <button class="card p-4 flex items-center gap-4 text-left w-full card-hover" data-view="solicitud"
+        <button class="card p-4 flex items-center gap-4 text-left w-full card-hover" data-status="activas" data-view="solicitud"
                 aria-label="Ver solicitud: Pérdida de agua en la cocina — En curso">
           <div class="w-12 h-12 rounded-xl flex items-center justify-center text-2xl flex-shrink-0" style="background:#eff6ff">💧</div>
           <div class="flex-1 min-w-0">
@@ -938,8 +1051,8 @@
               <p class="font-bold text-sm text-slate-900 truncate">Pérdida de agua en la cocina</p>
               <span class="badge badge-blue ml-2 flex-shrink-0">En curso</span>
             </div>
-            <p class="text-xs text-slate-400">Plomería</p>
-            <div class="flex items-center gap-2 text-xs text-slate-400 mt-1">
+            <p class="text-xs text-slate-500">Plomería</p>
+            <div class="flex items-center gap-2 text-xs text-slate-500 mt-1">
               <span>🕐 Hoy, 19:00 – 21:00</span>
             </div>
             <div class="flex items-center justify-between mt-1">
@@ -951,7 +1064,7 @@
         </button>
 
         <!-- Finalizada -->
-        <button class="card p-4 flex items-center gap-4 text-left w-full card-hover" data-view="calificar"
+        <button class="card p-4 flex items-center gap-4 text-left w-full card-hover" data-status="finalizadas" data-view="calificar"
                 aria-label="Ver solicitud: Instalación de ventilador — Finalizada">
           <div class="w-12 h-12 rounded-xl flex items-center justify-center text-2xl flex-shrink-0" style="background:#fffbeb">⚡</div>
           <div class="flex-1 min-w-0">
@@ -959,8 +1072,8 @@
               <p class="font-bold text-sm text-slate-900 truncate">Instalación de ventilador de techo</p>
               <span class="badge badge-green ml-2 flex-shrink-0">Finalizada</span>
             </div>
-            <p class="text-xs text-slate-400">Electricidad</p>
-            <div class="flex items-center gap-2 text-xs text-slate-400 mt-1">
+            <p class="text-xs text-slate-500">Electricidad</p>
+            <div class="flex items-center gap-2 text-xs text-slate-500 mt-1">
               <span>📅 12 mar, 2025</span>
             </div>
             <div class="flex items-center justify-between mt-1">
@@ -972,7 +1085,7 @@
         </button>
 
         <!-- Finalizada 2 -->
-        <button class="card p-4 flex items-center gap-4 text-left w-full card-hover"
+        <button class="card p-4 flex items-center gap-4 text-left w-full card-hover" data-status="finalizadas" data-view="calificar"
                 aria-label="Ver solicitud: Pintar habitación — Finalizada">
           <div class="w-12 h-12 rounded-xl flex items-center justify-center text-2xl flex-shrink-0" style="background:#fdf4ff">🎨</div>
           <div class="flex-1 min-w-0">
@@ -980,8 +1093,8 @@
               <p class="font-bold text-sm text-slate-900 truncate">Pintar habitación</p>
               <span class="badge badge-green ml-2 flex-shrink-0">Finalizada</span>
             </div>
-            <p class="text-xs text-slate-400">Pintura</p>
-            <div class="flex items-center gap-2 text-xs text-slate-400 mt-1">
+            <p class="text-xs text-slate-500">Pintura</p>
+            <div class="flex items-center gap-2 text-xs text-slate-500 mt-1">
               <span>📅 5 mar, 2025</span>
             </div>
             <div class="flex items-center justify-between mt-1">
@@ -993,15 +1106,15 @@
         </button>
 
         <!-- Cancelada -->
-        <div class="card p-4 flex items-center gap-4 opacity-70">
+        <div class="card p-4 flex items-center gap-4" data-status="canceladas">
           <div class="w-12 h-12 rounded-xl flex items-center justify-center text-2xl flex-shrink-0" style="background:#fef3c7">🔥</div>
           <div class="flex-1 min-w-0">
             <div class="flex items-center justify-between mb-0.5">
               <p class="font-bold text-sm text-slate-900 truncate">Reparación de calefón</p>
               <span class="badge badge-red ml-2 flex-shrink-0">Cancelada</span>
             </div>
-            <p class="text-xs text-slate-400">Gas</p>
-            <div class="flex items-center gap-2 text-xs text-slate-400 mt-1">
+            <p class="text-xs text-slate-500">Gas</p>
+            <div class="flex items-center gap-2 text-xs text-slate-500 mt-1">
               <span>📅 28 feb, 2025</span>
             </div>
             <div class="flex items-center justify-between mt-1">
@@ -1011,6 +1124,7 @@
         </div>
 
       </div>
+      <p id="solicitudes-empty" class="text-center text-sm text-slate-500 py-10" hidden>No hay solicitudes en esta pestaña.</p>
     </div>
 
   </section><!-- /view-solicitudes -->
@@ -1028,17 +1142,17 @@
 
       <!-- Avatar + User info -->
       <div class="flex flex-col items-center mb-6">
-        <div class="w-20 h-20 rounded-full bg-brand border-4 border-white flex items-center justify-center text-white text-3xl font-bold shadow mb-3"
+        <div role="img" class="w-20 h-20 rounded-full bg-brand border-4 border-white flex items-center justify-center text-white text-3xl font-bold shadow mb-3"
              aria-label="Avatar de María González">MG</div>
         <h1 class="font-extrabold text-xl text-slate-900">María González</h1>
-        <p class="text-slate-400 text-sm mt-0.5">maria@email.com</p>
+        <p class="text-slate-500 text-sm mt-0.5">maria@email.com</p>
       </div>
 
       <!-- Settings list -->
       <nav class="card p-2" aria-label="Opciones de perfil">
         <ul role="list">
           <li>
-            <a href="#" class="settings-row" aria-label="Mis datos personales">
+            <a href="#" data-action="soon" class="settings-row" aria-label="Mis datos personales">
               <div class="flex items-center gap-3">
                 <div class="w-9 h-9 rounded-xl bg-slate-100 flex items-center justify-center text-base">👤</div>
                 <span class="font-medium text-sm text-slate-800">Mis datos</span>
@@ -1047,7 +1161,7 @@
             </a>
           </li>
           <li>
-            <a href="#" class="settings-row" aria-label="Mis direcciones guardadas">
+            <a href="#" data-action="soon" class="settings-row" aria-label="Mis direcciones guardadas">
               <div class="flex items-center gap-3">
                 <div class="w-9 h-9 rounded-xl bg-slate-100 flex items-center justify-center text-base">📍</div>
                 <span class="font-medium text-sm text-slate-800">Direcciones</span>
@@ -1056,7 +1170,7 @@
             </a>
           </li>
           <li>
-            <a href="#" class="settings-row" aria-label="Métodos de pago">
+            <a href="#" data-action="soon" class="settings-row" aria-label="Métodos de pago">
               <div class="flex items-center gap-3">
                 <div class="w-9 h-9 rounded-xl bg-slate-100 flex items-center justify-center text-base">💳</div>
                 <span class="font-medium text-sm text-slate-800">Métodos de pago</span>
@@ -1065,7 +1179,7 @@
             </a>
           </li>
           <li>
-            <a href="#" class="settings-row" aria-label="Notificaciones">
+            <a href="#" data-action="soon" class="settings-row" aria-label="Notificaciones">
               <div class="flex items-center gap-3">
                 <div class="w-9 h-9 rounded-xl bg-slate-100 flex items-center justify-center text-base">🔔</div>
                 <span class="font-medium text-sm text-slate-800">Notificaciones</span>
@@ -1074,7 +1188,7 @@
             </a>
           </li>
           <li>
-            <a href="#" class="settings-row" aria-label="Seguridad">
+            <a href="#" data-action="soon" class="settings-row" aria-label="Seguridad">
               <div class="flex items-center gap-3">
                 <div class="w-9 h-9 rounded-xl bg-slate-100 flex items-center justify-center text-base">🔒</div>
                 <span class="font-medium text-sm text-slate-800">Seguridad</span>
@@ -1083,7 +1197,7 @@
             </a>
           </li>
           <li>
-            <a href="#" class="settings-row" aria-label="Ayuda y soporte">
+            <a href="#" data-action="soon" class="settings-row" aria-label="Ayuda y soporte">
               <div class="flex items-center gap-3">
                 <div class="w-9 h-9 rounded-xl bg-slate-100 flex items-center justify-center text-base">❓</div>
                 <span class="font-medium text-sm text-slate-800">Ayuda y soporte</span>
@@ -1095,7 +1209,7 @@
             <button class="settings-row w-full text-left" id="logout-btn" aria-label="Cerrar sesión">
               <div class="flex items-center gap-3">
                 <div class="w-9 h-9 rounded-xl bg-red-50 flex items-center justify-center text-base">↩️</div>
-                <span class="font-medium text-sm text-red-600">Cerrar sesión</span>
+                <span class="font-medium text-sm text-red-700">Cerrar sesión</span>
               </div>
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#dc2626" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg>
             </button>
@@ -1136,6 +1250,38 @@
   </button>
 
 </nav>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     MODALES ACCESIBLES (<dialog> nativo: foco atrapado, Esc cierra,
+     foco devuelto al disparador desde app.js)
+═══════════════════════════════════════════════════════════════ -->
+<dialog id="success-modal" class="modal" aria-labelledby="success-title" aria-describedby="success-desc">
+  <div class="modal-panel text-center">
+    <button type="button" class="btn-icon modal-close" data-close aria-label="Cerrar">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/></svg>
+    </button>
+    <div class="pop-in w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4" aria-hidden="true">
+      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#15803d" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+    </div>
+    <h2 id="success-title" class="text-xl font-bold text-slate-900 mb-2">✓ Solicitud publicada</h2>
+    <p id="success-desc" class="text-sm text-slate-600 mb-6">Te avisaremos cuando lleguen propuestas.</p>
+    <div class="flex flex-col sm:flex-row gap-3">
+      <button type="button" class="btn btn-secondary flex-1" data-close>Seguir explorando</button>
+      <button type="button" id="success-go" class="btn btn-primary force-text-white flex-1">Ver mis solicitudes</button>
+    </div>
+  </div>
+</dialog>
+
+<dialog id="confirm-modal" class="modal" aria-labelledby="confirm-title" aria-describedby="confirm-desc">
+  <div class="modal-panel">
+    <h2 id="confirm-title" class="text-lg font-bold text-slate-900 mb-2">¿Confirmás esta acción?</h2>
+    <p id="confirm-desc" class="text-sm text-slate-600 mb-6">Esta acción no se puede deshacer.</p>
+    <div class="flex flex-col-reverse sm:flex-row gap-3 sm:justify-end">
+      <button type="button" class="btn btn-secondary sm:!w-auto" data-close autofocus>Volver</button>
+      <button type="button" id="confirm-ok" class="btn btn-danger-solid force-text-white sm:!w-auto">Confirmar</button>
+    </div>
+  </div>
+</dialog>
 
 <!-- TOAST Notification -->
 <div id="toast" role="status" aria-live="polite" aria-atomic="true"></div>

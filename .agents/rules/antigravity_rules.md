@@ -13,20 +13,22 @@ Este documento define el Operating System del proyecto y las Reglas Globales de 
 - **Comunicación**: Respuestas directas, profesionales y con justificación estratégica del valor del producto.
 
 ## 2. Tech Stack & Defaults
-- **Arquitectura**: SPA (Single Page Application) con Vite y TypeScript.
-- **Marcado & Estilos**: HTML5 semántico + Tailwind CSS.
+- **Arquitectura**: SPA (Single Page Application) en JavaScript Vanilla, en tres archivos: `index.html`, `style.css`, `app.js` (ver ADR-003).
+- **Marcado & Estilos**: HTML5 semántico + Tailwind CSS v3 vía CDN + tokens CSS propios en `style.css`.
+- **Límites**: sin backend, sin build tools, sin frameworks pesados (React/Vue/Vite/TypeScript quedan fuera del MVP).
 - **Estados de Componentes**: Todos los componentes interactivos deben soportar y gestionar de forma explícita los 5 estados principales:
   1. `Default`
   2. `Hover`
   3. `Active`
   4. `Focus`
   5. `Disabled`
-- **Persistencia Local**: IndexedDB / LocalStorage.
+- **Persistencia Local**: `localStorage` (tema, solicitudes publicadas, último filtro, último prestador).
+- **Tema**: modo Dark/Light obligatorio, ambos con contraste WCAG AA; los botones de acento usan `.force-text-white`.
 
 ## 3. Definition of Done (DoD)
 Para dar una tarea o feature por completada, se debe cumplir estrictamente:
 - **Justificación Técnica**: Explicar claramente el *Why* y *How* del cambio.
-- **Tipado & Pruebas**: Tipos TypeScript estrictos sin errores y validación de funciones.
+- **Pruebas**: sin errores en consola; flujo probado con teclado (`Tab`, `Enter`, `Esc`) en ambos temas.
 - **Verificación Visual & Estados**: Comprobación visual de los 5 estados de componentes UI.
 - **Accesibilidad**: Accesibilidad y contraste conforme a la norma WCAG AA (ratio mínimo de contraste 4.5:1).
 - **Calidad de Código**: Código limpio, modular, sin archivos o comentarios basura (dead code/logs innecesarios).
@@ -52,4 +54,5 @@ El contexto del proyecto se mantiene centralizado y actualizado continuamente en
   3. `Tasks`: Desglosar en tareas atómicas.
   4. `Apply`: Implementar el código paso a paso.
   5. `Verify`: Validar visualmente, compilar y ejecutar pruebas.
-- **Memoria Engram / Persistencia**: Mantener sincronizados el contexto y la memoria de la sesión para evitar pérdida de conocimiento inter-sesión.
+- **Memoria Engram / Persistencia**: Al cerrar cada fase SDD, guardar con `mem_save` las decisiones, hallazgos y errores relevantes (proyecto `manocerca`), y consultarlos con `mem_search` al iniciar una sesión nueva.
+- **Reporte**: Cada ciclo SDD se registra en `REPORTE_VERIFICACION_SDD.md` (raíz del repo).
