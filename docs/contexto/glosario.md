@@ -24,3 +24,6 @@
 | `Report` | **Denunciar** | Alerta sobre publicaciones o conductas indebidas. |
 | `Dashboard` | **Inicio** | Pantalla principal de la SPA. |
 | `Status` | **Estado del trabajo** | Etapa actual en el ciclo de vida. |
+
+| `Account / Profile settings` | **Mi cuenta** | Nombre elegido por 5 de 5 personas en el card sorting. |
+| `Provider` (en tarjetas de prueba) | **Trabajador** | Palabra usada en el card sorting para no inducir el vocabulario de la app. |

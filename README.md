@@ -7,10 +7,19 @@ Abrí `index.html` en el navegador (requiere conexión para el CDN de Tailwind y
 
 ## Qué incluye
 - Navegación SPA entre 10 vistas, con botón "atrás" del navegador funcional.
-- Modo Dark/Light persistido en `localStorage`.
-- Catálogo dinámico de 6 prestadores con filtros por categoría y búsqueda.
-- Formulario "Publicá tu solicitud" con 4 campos validados y modal accesible de confirmación.
-- Accesibilidad WCAG AA: contraste ≥ 4.5:1 en ambos temas, foco visible, operable 100% con `Tab`, `Enter` y `Esc`.
+- Recorrido completo del cliente: publicar → recibir propuestas → chatear → contratar → seguir el trabajo → calificar.
+- Respuestas simuladas en el navegador (sin backend): propuestas, chat, llegada del trabajador.
+- Mi cuenta con 6 paneles funcionales, cupón de descuento, zona por barrio y sesión.
+- Modo Dark/Light y texto grande, persistidos en `localStorage`.
+- Mobile first: probada desde 320 px (celulares chicos) hasta escritorio, sin scroll horizontal y con áreas de toque de 44 px.
+- Accesibilidad WCAG AA: contraste ≥ 4.5:1 en ambos temas, foco visible, operable 100% con `Tab`, `Enter`, `Espacio` y `Esc`.
+
+## Créditos
+- Íconos: [Lucide](https://lucide.dev) (licencia ISC).
+- Foto del inicio: [Unsplash](https://unsplash.com/photos/a-man-working-on-a-pipe-in-a-cabinet-wzIjLL4KB-4) (licencia Unsplash).
+
+## Antes de presentar
+Abrí **Mi cuenta › Ayuda y soporte › Reiniciar datos de la demo** para empezar con los datos de ejemplo.
 
 ## Prueba rápida por teclado
 1. `Tab` → aparece "Saltar al contenido principal".

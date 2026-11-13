@@ -97,6 +97,9 @@ body {
   transition: background-color .25s, color .25s;
 }
 
+/* El atributo hidden siempre oculta, aunque el elemento tenga .flex u otra utilidad */
+[hidden] { display: none !important; }
+
 /* Clase utilitaria exigida: texto blanco forzado en botones de acento */
 .force-text-white,
 .force-text-white:hover,
@@ -182,10 +185,30 @@ html.dark .theme-icon-sun  { display: block; }
 html.dark .theme-icon-moon { display: none; }
 
 /* ── 7. HERO ──────────────────────────────────────────────────── */
+/* Foto de fondo: plomero trabajando (Unsplash, licencia libre) con un velo
+   azul encima. El velo es lo que garantiza el contraste AA del texto blanco:
+   en mobile cubre todo parejo y en escritorio deja ver la foto a la derecha,
+   donde no hay texto. Si la foto no carga, queda el degradé de siempre. */
 .hero-bg {
-  background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 45%, #1D4ED8 100%);
+  --hero-photo: url("https://images.unsplash.com/photo-1676210133055-eab6ef033ce3?auto=format&fit=crop&w=1600&q=70");
+  background-color: #1e3a8a;
+  background-image:
+    linear-gradient(180deg, rgba(15,23,42,0.86) 0%, rgba(30,58,138,0.88) 100%),
+    var(--hero-photo),
+    linear-gradient(135deg, #0f172a 0%, #1e3a8a 45%, #1D4ED8 100%);
+  background-size: cover, cover, cover;
+  background-position: center, 70% center, center;
   position: relative;
   overflow: hidden;
+}
+@media (min-width: 768px) {
+  .hero-bg {
+    background-image:
+      linear-gradient(90deg, rgba(15,23,42,0.95) 0%, rgba(30,58,138,0.90) 45%, rgba(29,78,216,0.45) 75%, rgba(29,78,216,0.2) 100%),
+      var(--hero-photo),
+      linear-gradient(135deg, #0f172a 0%, #1e3a8a 45%, #1D4ED8 100%);
+    background-position: center, right center, center;
+  }
 }
 .hero-bg::after {
   content: '';
@@ -197,16 +220,6 @@ html.dark .theme-icon-moon { display: none; }
   background: radial-gradient(ellipse at center, rgba(59,130,246,0.25) 0%, transparent 70%);
   pointer-events: none;
 }
-.hero-worker {
-  position: absolute;
-  right: 0;
-  top: 0;
-  width: 45%;
-  height: 100%;
-  background: linear-gradient(to left, rgba(29,78,216,0.15), transparent);
-  display: none;
-}
-@media (min-width: 768px) { .hero-worker { display: block; } }
 
 /* ── 8. AVATAR ────────────────────────────────────────────────── */
 .avatar {
@@ -384,7 +397,10 @@ html.dark .theme-icon-moon { display: none; }
   justify-content: center;
   font-size: 1.5rem;
 }
-.cat-icon { color: #0f172a; }   /* glifo sobre fondo pastel fijo */
+/* Íconos Lucide (SVG inline): heredan el color del texto con currentColor */
+.ico { display: block; flex-shrink: 0; }
+.ico-inline { display: inline-block; vertical-align: -2px; }
+.menu-row:not(.text-red-700) .ico { color: var(--c-muted); }
 .cat-label { font-size: 0.72rem; font-weight: 500; color: var(--c-muted); line-height: 1.3; }
 
 /* ── 13. INPUTS / FORMULARIO ──────────────────────────────────── */
@@ -755,6 +771,127 @@ html.dark .border-white { border-color: var(--c-surface) !important; }
 
 /* Las secciones fijas en oscuro (hero, cupón, footer) no cambian */
 html.dark .on-dark .text-slate-500 { color: #94a3b8 !important; }
+
+/* ── 26b. COMPONENTES DE LA VERSIÓN FINAL ─────────────────────── */
+
+/* Texto grande (ajuste de accesibilidad en Mi cuenta) */
+html.big-text { font-size: 112.5%; }
+html.big-text body { font-size: 1.06rem; }
+
+/* Modal ancho para paneles con formularios */
+.modal.modal-lg { max-width: min(520px, calc(100vw - 32px)); }
+.modal .modal-panel { max-height: calc(100dvh - 48px); overflow-y: auto; }
+.panel-body .field { margin-bottom: 14px; }
+
+/* Interruptor accesible (role="switch") — 5 estados */
+.switch {
+  position: relative; flex: none; width: 48px; height: 28px; border-radius: 999px;
+  background: var(--c-border-strong); border: none; cursor: pointer; transition: background .18s, box-shadow .18s;
+}
+.switch span {
+  position: absolute; top: 3px; left: 3px; width: 22px; height: 22px; border-radius: 50%;
+  background: #fff; box-shadow: 0 1px 3px rgba(0,0,0,.3); transition: transform .18s;
+}
+.switch[aria-checked="true"] { background: var(--c-brand); }
+.switch[aria-checked="true"] span { transform: translateX(20px); }
+.switch:hover { box-shadow: 0 0 0 4px var(--c-brand-soft); }
+.switch:active span { width: 26px; }
+.switch:disabled { opacity: .5; cursor: not-allowed; }
+
+/* Fila de opción con radio */
+.radio-row {
+  display: flex; align-items: center; gap: 10px; min-height: 44px; padding: 8px 12px;
+  border: 1.5px solid var(--c-border); border-radius: var(--radius-md); margin-bottom: 8px;
+  cursor: pointer; font-size: .9rem; color: var(--c-text-2); transition: border-color .15s, background .15s;
+}
+.radio-row:hover { border-color: var(--c-brand-text); background: var(--c-brand-soft); }
+.radio-row:has(input:checked) { border-color: var(--c-brand); background: var(--c-brand-soft); font-weight: 600; }
+.radio-row input { width: 18px; height: 18px; accent-color: var(--c-brand); }
+
+/* Opciones de menú dentro de un panel */
+.menu-row {
+  display: flex; align-items: center; gap: 10px; width: 100%; min-height: 48px; padding: 0 14px;
+  border-radius: var(--radius-md); background: var(--c-surface-2); border: none; cursor: pointer;
+  font-family: inherit; font-size: .92rem; font-weight: 600; color: var(--c-text-2); text-align: left;
+  transition: background .15s, transform .12s;
+}
+.menu-row:hover  { background: var(--c-brand-soft); }
+.menu-row:active { transform: scale(.98); }
+
+/* Preguntas frecuentes */
+.faq { border: 1px solid var(--c-border); border-radius: var(--radius-md); background: var(--c-surface); }
+.faq summary { cursor: pointer; padding: 12px 14px; font-weight: 600; font-size: .9rem; color: var(--c-text-2); list-style: none; }
+.faq summary::-webkit-details-marker { display: none; }
+.faq summary::after { content: '+'; float: right; color: var(--c-brand-text); font-weight: 800; }
+.faq[open] summary::after { content: '−'; }
+.faq summary:hover { color: var(--c-brand-text); }
+.faq p { padding: 0 14px 12px; font-size: .86rem; color: var(--c-muted); }
+
+.prose-mc p { font-size: .9rem; color: var(--c-text-3); margin-bottom: 10px; line-height: 1.5; }
+
+/* Contador sobre la pestaña Solicitudes */
+.bnav-btn { position: relative; }
+.nav-badge {
+  position: absolute; top: 4px; left: calc(50% + 6px); min-width: 18px; height: 18px; padding: 0 5px;
+  border-radius: 999px; background: #b91c1c; color: #fff; font-size: 11px; font-weight: 800;
+  display: inline-flex; align-items: center; justify-content: center; border: 2px solid var(--c-surface);
+}
+.nav-badge[hidden] { display: none; }
+
+/* Chat: foto enviada, mensaje inicial, "escribiendo…" */
+.chat-photo { max-width: 200px; border-radius: 14px; display: block; border: 1px solid var(--c-border); }
+.chat-intro { text-align: center; font-size: .85rem; color: var(--c-subtle); padding: 24px 12px; }
+.typing { align-self: flex-start; display: inline-flex; gap: 4px; padding: 12px 14px; border-radius: 18px; background: var(--c-surface-2); }
+.typing > span:not(.sr-only) { width: 7px; height: 7px; border-radius: 50%; background: var(--c-subtle); animation: blink 1.2s infinite ease-in-out; }
+.typing > span:nth-child(2) { animation-delay: .15s; }
+.typing > span:nth-child(3) { animation-delay: .3s; }
+@keyframes blink { 0%, 80%, 100% { opacity: .3; transform: translateY(0); } 40% { opacity: 1; transform: translateY(-3px); } }
+
+/* Indicador de carga */
+.spinner { flex: none; width: 20px; height: 20px; border-radius: 50%; border: 3px solid var(--c-brand-soft); border-top-color: var(--c-brand); animation: spin .9s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.photo-thumb img, img.photo-thumb { object-fit: cover; }
+.own-review { background: var(--c-brand-soft); border-radius: 10px; padding: 10px 12px !important; }
+.card.tint { background: var(--c-brand-soft); border-color: #bfdbfe; }
+html.dark .card.tint { border-color: var(--c-border); }
+
+/* ── 26c. MOBILE FIRST: celulares chicos (320–414 px) ─────────────
+   Probado a 320, 360, 375, 390 y 414 px: sin scroll horizontal,
+   sin textos cortados y con áreas de toque de 44 px o más. */
+html, body { overflow-x: clip; }              /* red de seguridad; no rompe el header sticky */
+body { overflow-wrap: break-word; }
+img, svg, video { max-width: 100%; }
+
+@media (max-width: 767px) {
+  /* En el celular "Mi cuenta" ya está en la barra inferior: el header deja
+     solo logo, tema y menú, así entra en 320 px. */
+  #user-btn.header-account { display: none; }
+
+  /* 16 px en campos evita que iOS haga zoom al tocarlos */
+  input:not([type="checkbox"]):not([type="radio"]), select, textarea, .input { font-size: 16px !important; }
+
+  /* Enlaces del footer: área de toque cómoda */
+  .footer-link { padding: 12px 0; margin-bottom: 0; }
+  .search-wrap input[type="search"] { min-height: 44px; }
+
+  /* Interruptores: la zona tocable crece sin cambiar el dibujo */
+  .switch::after { content: ""; position: absolute; inset: -8px -4px; }
+
+  /* Toast: arriba de la barra inferior y con texto que corta bien */
+  #toast { padding: 12px 16px; bottom: 84px; }
+
+  /* Paneles y modales: aprovechan el ancho y el alto de la pantalla */
+  .modal, .modal.modal-lg { max-width: calc(100vw - 24px); }
+  .modal-panel { padding: 24px 18px 20px; }
+  .modal .modal-panel { max-height: calc(100dvh - 32px); }
+}
+
+@media (max-width: 379px) {
+  .avatar-list { width: 48px; height: 48px; font-size: 1rem; }
+  .filter-chip { padding-left: 14px; padding-right: 14px; }
+  h1 { font-size: clamp(1.75rem, 9vw, 2.25rem); }
+}
 
 /* ── 27. MOVIMIENTO REDUCIDO ──────────────────────────────────── */
 @media (prefers-reduced-motion: reduce) {

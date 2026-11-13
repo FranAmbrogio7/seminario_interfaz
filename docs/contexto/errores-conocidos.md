@@ -37,3 +37,25 @@
   - *Solución*: `navigate(id, { push: false })` al responder a `popstate`.
 - **Texto heredado en íconos del footer**: "f" y "▶" heredaban `text-slate-900` sobre navy (1.3:1).
   - *Solución*: `text-white` explícito en los enlaces sociales.
+
+## 6. Hallazgos del ciclo SDD del 2026-11-09
+- **`hidden` no ocultaba elementos con `.flex`**: la utilidad de Tailwind gana sobre el estilo del navegador para `[hidden]`; la fila del cupón aparecía con "−$0".
+  - *Solución*: `[hidden] { display: none !important; }` en `style.css`.
+- **Seguimiento mostraba un trabajo ya cancelado**: el contexto guardaba el id aunque el estado hubiera cambiado.
+  - *Solución*: `trackedRequest()` solo devuelve solicitudes en estado `contratada`.
+- **Listeners duplicados al volver a dibujar un panel**: borrar una dirección eliminaba dos.
+  - *Solución*: cada `renderPanel()` reemplaza `#panel-body` por un nodo nuevo.
+- **Avatar tapado por la portada en Perfil y Mi cuenta**: la portada es `position: relative` y se pinta encima.
+  - *Solución*: `relative z-10` en el contenedor del avatar.
+
+## 7. Mobile first: celulares chicos (2026-11-09)
+- **Scroll horizontal en 320 px**: el header sumaba logo + tema + cuenta + menú con `px-6 gap-6` y empujaba la hamburguesa fuera de pantalla.
+  - *Solución*: `px-4 gap-3` en mobile y el botón de cuenta del header se oculta debajo de 768 px, porque "Mi cuenta" ya está en la barra inferior.
+- **Botón del buscador del inicio cortado**: un `<input>` dentro de un flex no se achica por debajo de su ancho intrínseco.
+  - *Solución*: `min-w-0 w-full` en el input y en su contenedor. Regla general: todo hijo flexible que tenga texto o un input lleva `min-w-0`.
+- **Títulos de solicitudes reducidos a "Pérdida …"**: el badge de estado competía con el título en la misma línea.
+  - *Solución*: título con `line-clamp-2` y badge que pasa abajo con `flex-wrap`.
+- **Pestañas de Mis solicitudes desbordadas**: ahora la fila se desplaza horizontalmente.
+- **Zoom automático en iOS al tocar un campo**: pasa con fuentes menores a 16 px. Todos los campos usan 16 px en mobile.
+- **Áreas de toque chicas**: links del footer, "Ver todas", "Eliminar", adjuntar en el chat e interruptores llevados a 44 px o más.
+- *Verificación*: auditoría automática a 320, 360, 375, 390, 414, 768, 1024 y 1280 px sin scroll horizontal ni textos cortados; recorrido E2E 82/82; contraste AA sin fallos también a 320 px.

@@ -61,3 +61,26 @@ Este documento contiene la bitácora cronológica y numérica de todas las decis
 - **Estado**: Aprobado.
 - **Contexto**: `antigravity_rules.md` indicaba Vite + TypeScript, en contradicción con ADR-003.
 - **Decisión**: Corregir las reglas a HTML5 + Tailwind CDN + JS Vanilla en tres archivos.
+
+### [ADR-012] · [2026-11-09] Arquitectura de información según el card sorting
+- **Estado**: Aprobado.
+- **Contexto**: Card sorting abierto con 5 personas (Reto 6). Nadie armó un grupo de mensajes; las 5 usaron "Mi cuenta"; las 5 agruparon perfil, reseñas, verificación y calificar.
+- **Decisión**: "Mi perfil" pasa a "Mi cuenta". La pestaña "Mensajes" se reemplaza por "Buscar" y el chat se abre desde cada propuesta, el perfil y el seguimiento. El perfil suma un bloque de reseñas.
+
+### [ADR-013] · [2026-11-09] Todas las funciones responden (simulación en el cliente)
+- **Estado**: Aprobado.
+- **Contexto**: Quedaban botones con "Función disponible próximamente" y datos que no coincidían entre pantallas (la propuesta de un trabajador abría la contratación de otro).
+- **Decisión**: Un único modelo de solicitudes con estados en `localStorage`. Las respuestas del "servidor" se simulan con temporizadores: propuestas a los 4 s de publicar, llegada del trabajador a los 7 s de contratar y respuestas del chat a los 1,8 s.
+
+### [ADR-014] · [2026-11-09] Paneles de Mi cuenta en un `<dialog>` reutilizable
+- **Estado**: Aprobado.
+- **Decisión**: Un solo `#panel-modal` cuyo contenido se arma desde `PANELS` (título, HTML y eventos). Cada dibujado reemplaza el contenedor para no acumular listeners. Los formularios validan en el cliente con el mismo patrón que "Publicá tu solicitud".
+
+### [ADR-015] · [2026-11-09] Íconos Lucide en lugar de emojis
+- **Estado**: Aprobado.
+- **Contexto**: Los emojis se ven distinto en cada sistema operativo (Android, iOS, Windows), no se les puede cambiar el color y no siguen el estilo de línea del resto de la interfaz.
+- **Decisión**: Usar [Lucide](https://lucide.dev) (licencia ISC), la misma librería que `lucide-react`, como SVG inline: en el HTML estático van escritos directo y en lo que dibuja `app.js` se usan con `icon(nombre, tamaño)`. No se agrega React ni ninguna dependencia, y se respeta ADR-003. Los íconos son decorativos (`aria-hidden`), heredan el color con `currentColor` y, sobre los fondos pastel fijos de las categorías, el color se fija en línea para que no lo cambie el modo oscuro. Los emojis quedan solo en los avisos (toasts), donde suman tono.
+
+### [ADR-016] · [2026-11-09] Foto de fondo en el hero
+- **Estado**: Aprobado.
+- **Decisión**: Foto de un plomero trabajando ([Unsplash](https://unsplash.com/photos/a-man-working-on-a-pipe-in-a-cabinet-wzIjLL4KB-4), licencia libre) cargada por URL, con un velo azul encima. El velo garantiza el contraste AA del texto blanco: en mobile cubre parejo (86–88 %) y en escritorio se aclara hacia la derecha, donde no hay texto. Si la foto no carga, queda el degradé original.
